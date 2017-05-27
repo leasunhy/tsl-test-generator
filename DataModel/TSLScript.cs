@@ -12,5 +12,7 @@ namespace TSLTestGenerator.DataModel
         }
 
         public ImmutableArray<ITSLTopLevelElement> TopLevelElements { get; private set; }
+
+        public override string ToString() => string.Join("\n", TopLevelElements);
     }
 }

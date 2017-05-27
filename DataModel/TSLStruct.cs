@@ -105,16 +105,16 @@ namespace TSLTestGenerator.DataModel
         {
             Name = name;
             Fields = fields.ToImmutableArray();
-            Attributes = attributes?.ToImmutableArray() ?? new ImmutableArray<TSLAttribute>();
+            Attributes = (attributes?.ToImmutableArray()).GetValueOrDefault();
         }
 
-        public string Name { get; private set; }
-        public ImmutableArray<TSLAttribute> Attributes { get; private set; }
-        public ImmutableArray<TSLField> Fields { get; private set; }
+        public string Name { get; }
+        public ImmutableArray<TSLAttribute> Attributes { get; }
+        public ImmutableArray<TSLField> Fields { get; }
 
         public override string ToString()
         {
-            string attributes = $"[{string.Join(", ", Attributes)}]";
+            string attributes = Attributes == null ? "" : $"[{string.Join(", ", Attributes)}]";
             string fields = string.Join("\n", Fields);
             return $"{attributes}\nstruct {Name}\n{{\n{fields}}}";
         }
