@@ -92,24 +92,25 @@ namespace TSLTestGenerator.DataModel
 
     public class TSLField
     {
-        public TSLField(ITSLType type, string name, IEnumerable<TSLAttribute> attributes, bool optional)
+        public bool Optional { get; }
+        public ITSLType Type { get; }
+        public string Name { get; }
+        public ImmutableArray<TSLAttribute> Attributes { get; }
+        public bool DynamicLengthed => Optional || Type.DynamicLengthed;
+
+        public TSLField(ITSLType type, string name, bool optional, IEnumerable<TSLAttribute> attributes = null)
         {
             Type = type;
             Name = name;
             Optional = optional;
-            Attributes = attributes.ToImmutableArray();
+            Attributes = (attributes?.ToImmutableArray()).GetValueOrDefault();
         }
-
-        public bool Optional { get; }
-        public ITSLType Type { get; }
-        public string Name { get; }
-        public ImmutableArray<TSLAttribute> Attributes { get; private set; }
 
         public override string ToString()
         {
-            string attributes = Attributes.Any() ? $"[{string.Join(",", Attributes)}]\n" : "";
+            string attributes = Attributes != null && !Attributes.IsEmpty ? $"[{string.Join(",", Attributes)}]" : "";
             string optional = Optional ? "optional" : "";
-            return $"{Attributes}{optional} {Type} {Name};";
+            return $"{attributes}\n{optional} {Type} {Name};";
         }
     }
 
@@ -124,13 +125,13 @@ namespace TSLTestGenerator.DataModel
         {
             Name = name;
             Fields = fields.ToImmutableArray();
-            DynamicLengthed = Fields.Any(f => f.Type.DynamicLengthed);
+            DynamicLengthed = Fields.Any(f => f.DynamicLengthed);
             Attributes = (attributes?.ToImmutableArray()).GetValueOrDefault();
         }
 
         public override string ToString()
         {
-            string attributes = Attributes == null ? "" : $"[{string.Join(", ", Attributes)}]";
+            string attributes = Attributes == null || Attributes.IsEmpty ? "" : $"[{string.Join(", ", Attributes)}]";
             string fields = string.Join("\n", Fields);
             return $"{attributes}\nstruct {Name}\n{{\n{fields}}}";
         }
