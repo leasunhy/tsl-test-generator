@@ -49,7 +49,6 @@ namespace TSLTestGenerator
         #region Generators
         public static void GenerateStruct(this TSLGeneratorContext context)
         {
-            // TODO
             var name = $"Struct_{context.TopLevelElementCount + 1}";
             var numberOfFields = DiscreteUniform.Sample(context.MasterRandom, MinFieldNumber, MaxFieldNumber);
             var fields = new List<TSLField>(numberOfFields);
@@ -95,7 +94,18 @@ namespace TSLTestGenerator
         {
             var optional = ContinuousUniform.Sample(context.MasterRandom, 0.0, 1.0) <
                 FieldProbabilities.OptionalFieldProbability;
-            throw new NotImplementedException();
+            var name = $"field{context.GeneratedElementCount}";
+            var type = context.GenerateRandomType();
+            context.GeneratedElementCount += 1;
+            // TODO(leasunhy): generate attributes
+            var field = new TSLField(type, name, optional, attributes: null);
+            return field;
+        }
+
+        public static ITSLType GenerateRandomType(this TSLGeneratorContext context)
+        {
+            // TODO
+            return AtomType.AtomTypes[0];
         }
         #endregion
     }
@@ -109,6 +119,7 @@ namespace TSLTestGenerator
 
         public Random MasterRandom { get; }
         public int TopLevelElementCount { get; private set; } = 0;
+        public int GeneratedElementCount { get; set; } = 0;
 
         public List<TSLStruct> Structs { get; } = new List<TSLStruct>();
         public List<TSLCell> Cells { get; } = new List<TSLCell>();
@@ -126,11 +137,12 @@ namespace TSLTestGenerator
         // top level elements = Struct | Cell | Enum | Protocol | Server | Proxy | Module
         public Action<double> GetTopLevelElementGenerator() => typeSelector =>
         {
-            InnerGenerator(typeSelector);
+            InnerGenerator(typeSelector, this);
             TopLevelElementCount += 1;
+            GeneratedElementCount += 1;
         };
 
-        public static readonly Action<double> InnerGenerator =
+        public static readonly Action<double, TSLGeneratorContext> InnerGenerator =
         (
             new TSLGeneratorCombinator(TopLevelElementProbabilities.Proxy, TSLGeneratorContextExtensions.GenerateProxy) |
             new TSLGeneratorCombinator(TopLevelElementProbabilities.Server, TSLGeneratorContextExtensions.GenerateServer) |
@@ -157,15 +169,15 @@ namespace TSLTestGenerator
             NextCombinator = next;
         }
 
-        public void Generate(double typeSelector)
+        public void Generate(double typeSelector, TSLGeneratorContext context)
         {
             if (typeSelector - Probability > 0)
             {
-                NextCombinator?.Generate(typeSelector - Probability);
+                NextCombinator?.Generate(typeSelector - Probability, context);
             }
             else
             {
-                GenerateFunc();
+                GenerateFunc(context);
             }
         }
 

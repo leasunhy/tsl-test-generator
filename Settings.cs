@@ -34,5 +34,10 @@ namespace TSLTestGenerator
             public const double Enum = 0.05;
             public const double Module = 0.20;
         }
+
+        public static class FieldProbabilities
+        {
+            public const double OptionalFieldProbability = 0.30;
+        }
     }
 }

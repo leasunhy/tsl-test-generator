@@ -58,6 +58,7 @@
     <Compile Include="DataModel\TSLProtocolGroups.cs" />
     <Compile Include="DataModel\TSLScript.cs" />
     <Compile Include="DataModel\TSLStruct.cs" />
+    <Compile Include="DataModel\TSLType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Settings.cs" />
