@@ -57,21 +57,40 @@ namespace TSLTestGenerator
 
         public static class ContainerProbabilities
         {
-            static ContainerProbabilities()
+
+            public static class Array
             {
-                Debug.Assert(Math.Abs(ElementAtom + ElementStruct + ElementEnum - 1.0) < 1e-6);
+                static Array()
+                {
+                    Debug.Assert(Math.Abs(ElementAtom + ElementStruct + ElementEnum - 1.0) < 1e-6);
+                }
+                public const double ElementAtom = 0.45;
+                public const double ElementStruct = 0.45;
+                public const double ElementEnum = 0.10;
+
+                public const int MinDimension = 1;
+                public const int MaxDimension = 10;
+
+                public const int MinDimensionLength = 1;
+                public const int MaxDimensionLength = 100;
             }
 
-            public const double ElementAtom = 0.45;
-            public const double ElementStruct = 0.45;
-            public const double ElementEnum = 0.10;
+            public static class List
+            {
+                static List()
+                {
+                    Debug.Assert(Math.Abs(ElementAtom + ElementStruct + ElementEnum + ElementArray + ElementList - 1.0) < 1e-6);
+                }
+                public const double ElementAtom = 0.30;
+                public const double ElementStruct = 0.30;
+                public const double ElementEnum = 0.10;
+                public const double ElementArray = 0.15;
+                public const double ElementList = 0.15;
 
-            // to test against lists/arrays of diverse lengths, we use uniform distribution instead of normal distributions
-            public const int ListMinDepth = 1;
-            public const int ListMaxDepth = 10;
-
-            public const int ArrayMinDim = 1;
-            public const int ArrayMaxDim = 10;
+                // to test against lists/arrays of diverse lengths, we use uniform distribution instead of normal distributions
+                public const int MinDepth = 1;
+                public const int MaxDepth = 10;
+            }
         }
     }
 }

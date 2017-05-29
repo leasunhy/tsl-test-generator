@@ -56,6 +56,7 @@ namespace TSLTestGenerator
         public int GeneratedElementCount { get; set; } = 0;
 
         public List<TSLStruct> Structs { get; } = new List<TSLStruct>();
+        public List<TSLStruct> FixedLengthStructs { get; } = new List<TSLStruct>();
         public List<TSLCell> Cells { get; } = new List<TSLCell>();
         public List<TSLEnum> Enums { get; } = new List<TSLEnum>();
         public List<TSLProtocol> Protocols { get; } = new List<TSLProtocol>();
@@ -69,32 +70,15 @@ namespace TSLTestGenerator
         #region Total Generator
         // NOTE(leasunhy): the bottom-most combinator is evaluated first due to implementation of operator |
         // top level elements = Struct | Cell | Enum | Protocol | Server | Proxy | Module
-        public Action<double> GetTopLevelElementGenerator() => typeSelector =>
+        public Func<double, ITSLTopLevelElement> GetTopLevelElementGenerator() => typeSelector =>
         {
-            InnerTopLevelElementGenerator(typeSelector, this);
+            var ret = TopLevelElementGenerators.StaticTopLevelElementGenerator(typeSelector, this);
             TopLevelElementCount += 1;
             GeneratedElementCount += 1;
+            return ret;
         };
 
-        public static readonly Func<double, TSLGeneratorContext, ITSLTopLevelElement> InnerTopLevelElementGenerator =
-        (
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(TopLevelElementProbabilities.Proxy, TopLevelElementGenerators.GenerateProxy) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(TopLevelElementProbabilities.Server, TopLevelElementGenerators.GenerateServer) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(TopLevelElementProbabilities.Module, TopLevelElementGenerators.GenerateModule) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(TopLevelElementProbabilities.Protocol, TopLevelElementGenerators.GenerateProtocol) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(TopLevelElementProbabilities.Cell, TopLevelElementGenerators.GenerateCell) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(TopLevelElementProbabilities.Struct, TopLevelElementGenerators.GenerateStruct) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(TopLevelElementProbabilities.Enum, TopLevelElementGenerators.GenerateEnum)
-        ).Generate;
-
-        public static readonly Func<double, TSLGeneratorContext, ITSLType> TypeGenerator =
-        (
-            new TSLGeneratorCombinator<ITSLType>(TypeProbabilities.Enum, TypeGenerators.GenerateEnumType) |
-            new TSLGeneratorCombinator<ITSLType>(TypeProbabilities.Atom, TypeGenerators.GenerateAtomType) |
-            new TSLGeneratorCombinator<ITSLType>(TypeProbabilities.ContainerArray, TypeGenerators.GenerateArrayType) |
-            new TSLGeneratorCombinator<ITSLType>(TypeProbabilities.ContainerList, TypeGenerators.GenerateListType) |
-            new TSLGeneratorCombinator<ITSLType>(TypeProbabilities.Struct, TypeGenerators.GenerateStructType)
-        ).Generate;
+        public Func<double, ITSLType> TypeGenerator => typeSelector => TypeGenerators.TypeGenerator.Generate(typeSelector, this);
         #endregion
     }
 
@@ -102,12 +86,14 @@ namespace TSLTestGenerator
     {
         public delegate R GenerateDelegate(TSLGeneratorContext context);
         public double Probability { get; }
+        public double CumulativeProbability { get; }
         public GenerateDelegate GenerateFunc { get; }
         public TSLGeneratorCombinator<R> NextCombinator { get; }
 
         public TSLGeneratorCombinator(double probability, GenerateDelegate generateFunc, TSLGeneratorCombinator<R> next = null)
         {
             Probability = probability;
+            CumulativeProbability = probability + (next?.CumulativeProbability ?? 0.0);
             GenerateFunc = generateFunc;
             NextCombinator = next;
         }
