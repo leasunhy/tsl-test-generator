@@ -12,8 +12,8 @@ namespace TSLTestGenerator.DataModel
             Protocols = protocols.ToImmutableArray();
         }
 
-        public ImmutableArray<TSLProtocol> Protocols { get; private set; }
-        public string Name { get; private set; }
+        public ImmutableArray<TSLProtocol> Protocols { get; }
+        public string Name { get; }
 
         public override string ToString() => $"{Name}\n{{ {string.Join("\n", Protocols.Select(p => $"protocol {p};"))} }}";
     }

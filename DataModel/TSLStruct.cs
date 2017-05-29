@@ -5,11 +5,42 @@ using System.Linq;
 
 namespace TSLTestGenerator.DataModel
 {
-    public class TSLType
+    public interface ITSLType
     {
-        public string Name { get; private set; }
-        public bool DynamicLengthed { get; private set; }
-        public TSLType(string name, bool dynamicLengthed)
+        string Name { get; }
+        bool DynamicLengthed { get; }
+    }
+
+    public class ArrayType : ITSLType
+    {
+        public string Name { get; }
+        public bool DynamicLengthed => false;
+
+        public ArrayType(ITSLType elementType, int[] dimensions)
+        {
+            if (elementType.DynamicLengthed)
+                throw new ArgumentOutOfRangeException(nameof(elementType), "Element type can't be dynamic lengthed!");
+            Name = $"{elementType}[{string.Join(", ", dimensions)}]";
+        }
+    }
+
+    public class ListType : ITSLType
+    {
+        public string Name { get; }
+        public bool DynamicLengthed => true;
+
+        public ListType(ITSLType elementType)
+        {
+            Name = $"List<{elementType}>";
+        }
+    }
+
+    public class AtomType : ITSLType
+    {
+        public string Name { get; }
+        public bool DynamicLengthed { get; }
+
+        public AtomType(string name, bool dynamicLengthed)
         {
             this.Name = name;
             DynamicLengthed = dynamicLengthed;
@@ -17,48 +48,31 @@ namespace TSLTestGenerator.DataModel
 
         public override string ToString() => Name;
 
-        public static ImmutableArray<TSLType> AtomTypes = new ImmutableArray<TSLType>
+        public static ImmutableArray<AtomType> AtomTypes = new ImmutableArray<AtomType>
         {
-            new TSLType("byte", false),
-            new TSLType("sbyte", false),
-            new TSLType("bool", false),
-            new TSLType("char", false),
-            new TSLType("short", false),
-            new TSLType("ushort", false),
-            new TSLType("int", false),
-            new TSLType("uint", false),
-            new TSLType("long", false),
-            new TSLType("ulong", false),
-            new TSLType("float", false),
-            new TSLType("double", false),
-            new TSLType("decimal", false),
-            new TSLType("DateTime", false),
-            new TSLType("Guid", false),
-            new TSLType("string", true),
-            new TSLType("u8string", true),
+            new AtomType("byte", false),
+            new AtomType("sbyte", false),
+            new AtomType("bool", false),
+            new AtomType("char", false),
+            new AtomType("short", false),
+            new AtomType("ushort", false),
+            new AtomType("int", false),
+            new AtomType("uint", false),
+            new AtomType("long", false),
+            new AtomType("ulong", false),
+            new AtomType("float", false),
+            new AtomType("double", false),
+            new AtomType("decimal", false),
+            new AtomType("DateTime", false),
+            new AtomType("Guid", false),
+            new AtomType("string", true),
+            new AtomType("u8string", true),
         };
-    }
-
-    public class TSLArrayType : TSLType
-    {
-        public TSLArrayType(TSLType elementType, int[] dimensions)
-            : base($"{elementType}[{string.Join(", ", dimensions)}]", false)
-        {
-            if (elementType.DynamicLengthed)
-                throw new ArgumentOutOfRangeException(nameof(elementType), "Element type can't be dynamic lengthed!");
-        }
-    }
-
-    public class TSLListType : TSLType
-    {
-        public TSLListType(TSLType elementType) : base($"List<{elementType}>", true)
-        {
-        }
     }
 
     public class TSLAttribute
     {
-        public string AttributeName { get; private set; }
+        public string AttributeName { get; }
 
         private TSLAttribute(string attributeName)
         {
@@ -78,7 +92,7 @@ namespace TSLTestGenerator.DataModel
 
     public class TSLField
     {
-        public TSLField(TSLType type, string name, IEnumerable<TSLAttribute> attributes, bool optional)
+        public TSLField(ITSLType type, string name, IEnumerable<TSLAttribute> attributes, bool optional)
         {
             Type = type;
             Name = name;
@@ -86,9 +100,9 @@ namespace TSLTestGenerator.DataModel
             Attributes = attributes.ToImmutableArray();
         }
 
-        public bool Optional { get; private set; }
-        public TSLType Type { get; private set; }
-        public string Name { get; private set; }
+        public bool Optional { get; }
+        public ITSLType Type { get; }
+        public string Name { get; }
         public ImmutableArray<TSLAttribute> Attributes { get; private set; }
 
         public override string ToString()
@@ -99,18 +113,20 @@ namespace TSLTestGenerator.DataModel
         }
     }
 
-    public class TSLStruct : ITSLTopLevelElement
+    public class TSLStruct : ITSLType, ITSLTopLevelElement
     {
+        public string Name { get; }
+        public bool DynamicLengthed { get; }
+        public ImmutableArray<TSLAttribute> Attributes { get; }
+        public ImmutableArray<TSLField> Fields { get; }
+
         public TSLStruct(string name, IEnumerable<TSLField> fields, IEnumerable<TSLAttribute> attributes = null)
         {
             Name = name;
             Fields = fields.ToImmutableArray();
+            DynamicLengthed = Fields.Any(f => f.Type.DynamicLengthed);
             Attributes = (attributes?.ToImmutableArray()).GetValueOrDefault();
         }
-
-        public string Name { get; }
-        public ImmutableArray<TSLAttribute> Attributes { get; }
-        public ImmutableArray<TSLField> Fields { get; }
 
         public override string ToString()
         {
@@ -129,7 +145,7 @@ namespace TSLTestGenerator.DataModel
 
         public override string ToString()
         {
-            string attributes = $"[{string.Join(", ", Attributes)}]";
+            string attributes = Attributes == null ? "" : $"[{string.Join(", ", Attributes)}]";
             string fields = string.Join("\n", Fields);
             return $"{attributes}\ncell struct {Name}\n{{\n{fields}}}";
         }

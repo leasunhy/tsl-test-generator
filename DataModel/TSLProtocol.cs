@@ -9,7 +9,7 @@
 
     public class TSLProtocol : ITSLTopLevelElement
     {
-        public TSLProtocol(string name, TSLProtocolType type, TSLType requestType, TSLType responseType)
+        public TSLProtocol(string name, TSLProtocolType type, ITSLType requestType, ITSLType responseType)
         {
             Name = name;
             Type = type;
@@ -17,10 +17,10 @@
             ResponseType = responseType;
         }
 
-        public string Name { get; private set; }
-        public TSLProtocolType Type { get; private set; }
-        public TSLType RequestType { get; private set; }
-        public TSLType ResponseType { get; private set; }
+        public string Name { get; }
+        public TSLProtocolType Type { get; }
+        public ITSLType RequestType { get; }
+        public ITSLType ResponseType { get; }
 
         public override string ToString() => $"protocol {Name}\n{{ Type: {Type}; Request: {RequestType}; Response: {ResponseType} }}";
     }
