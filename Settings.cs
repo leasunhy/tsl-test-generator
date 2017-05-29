@@ -39,5 +39,39 @@ namespace TSLTestGenerator
         {
             public const double OptionalFieldProbability = 0.30;
         }
+
+        public static class TypeProbabilities
+        {
+            static TypeProbabilities()
+            {
+                Debug.Assert(Math.Abs(Atom + Struct + Enum + ContainerList + ContainerArray - 1.0) < 1e-6);
+            }
+
+            // type probabilities; must sum to 1.00
+            public const double Atom = 0.30;
+            public const double Struct = 0.30;
+            public const double Enum = 0.10;
+            public const double ContainerList = 0.15;
+            public const double ContainerArray = 0.15;
+        }
+
+        public static class ContainerProbabilities
+        {
+            static ContainerProbabilities()
+            {
+                Debug.Assert(Math.Abs(ElementAtom + ElementStruct + ElementEnum - 1.0) < 1e-6);
+            }
+
+            public const double ElementAtom = 0.45;
+            public const double ElementStruct = 0.45;
+            public const double ElementEnum = 0.10;
+
+            // to test against lists/arrays of diverse lengths, we use uniform distribution instead of normal distributions
+            public const int ListMinDepth = 1;
+            public const int ListMaxDepth = 10;
+
+            public const int ArrayMinDim = 1;
+            public const int ArrayMaxDim = 10;
+        }
     }
 }
