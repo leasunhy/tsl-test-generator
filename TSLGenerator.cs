@@ -44,6 +44,62 @@ namespace TSLTestGenerator
         }
     }
 
+    public static class TSLGeneratorContextExtensions
+    {
+        #region Generators
+        public static void GenerateStruct(this TSLGeneratorContext context)
+        {
+            // TODO
+            var name = $"Struct_{context.TopLevelElementCount + 1}";
+            var numberOfFields = DiscreteUniform.Sample(context.MasterRandom, MinFieldNumber, MaxFieldNumber);
+            var fields = new List<TSLField>(numberOfFields);
+            for (int i = 0; i < numberOfFields; ++i)
+                fields.Add(context.GenerateRandomField());
+            var result = new TSLStruct(name, fields);
+            context.Structs.Add(result);
+        }
+
+        public static void GenerateServer(this TSLGeneratorContext context)
+        {
+            // TODO
+        }
+
+        public static void GenerateProxy(this TSLGeneratorContext context)
+        {
+            // TODO
+        }
+
+        public static void GenerateModule(this TSLGeneratorContext context)
+        {
+            // TODO
+        }
+
+        public static void GenerateProtocol(this TSLGeneratorContext context)
+        {
+            // TODO
+        }
+
+        public static void GenerateEnum(this TSLGeneratorContext context)
+        {
+            // TODO
+        }
+
+        public static void GenerateCell(this TSLGeneratorContext context)
+        {
+            // TODO
+        }
+        #endregion
+
+        #region Helpers
+        public static TSLField GenerateRandomField(this TSLGeneratorContext context)
+        {
+            var optional = ContinuousUniform.Sample(context.MasterRandom, 0.0, 1.0) <
+                FieldProbabilities.OptionalFieldProbability;
+            throw new NotImplementedException();
+        }
+        #endregion
+    }
+
     public class TSLGeneratorContext
     {
         public TSLGeneratorContext(Random masterRandom)
@@ -65,83 +121,31 @@ namespace TSLTestGenerator
         public IEnumerable<ITSLTopLevelElement> GetAllTopLevelElements() =>
             new IEnumerable<ITSLTopLevelElement>[] { Structs, Cells, Enums, Protocols, Servers, Proxies, Modules }.Aggregate(Enumerable.Concat);
 
-        #region Generators
-        public void GenerateStruct()
-        {
-            // TODO
-            var name = $"Struct_{TopLevelElementCount + 1}";
-            var numberOfFields = DiscreteUniform.Sample(MasterRandom, MinFieldNumber, MaxFieldNumber);
-            var fields = new List<TSLField>(numberOfFields);
-            for (int i = 0; i < numberOfFields; ++i)
-                fields.Add(GenerateRandomField());
-            var result = new TSLStruct(name, fields);
-            Structs.Add(result);
-        }
-
-        public void GenerateServer()
-        {
-            // TODO
-        }
-
-        public void GenerateProxy()
-        {
-            // TODO
-        }
-
-        public void GenerateModule()
-        {
-            // TODO
-        }
-
-        public void GenerateProtocol()
-        {
-            // TODO
-        }
-
-        public void GenerateEnum()
-        {
-            // TODO
-        }
-
-        public void GenerateCell()
-        {
-            // TODO
-        }
-        #endregion
-
-        #region Helpers
-        public TSLField GenerateRandomField()
-        {
-            var optional = ContinuousUniform.Sample(MasterRandom, 0.0, 1.0) <
-                FieldProbabilities.OptionalFieldProbability;
-        }
-        #endregion
-
         #region Total Generator
         // NOTE(leasunhy): the bottom-most combinator is evaluated first due to implementation of operator |
         // top level elements = Struct | Cell | Enum | Protocol | Server | Proxy | Module
         public Action<double> GetTopLevelElementGenerator() => typeSelector =>
         {
-            _innerGenerator(typeSelector);
+            InnerGenerator(typeSelector);
             TopLevelElementCount += 1;
         };
 
-        private Action<double> _innerGenerator =
+        public static readonly Action<double> InnerGenerator =
         (
-            new TSLGeneratorCombinator(TopLevelElementProbabilities.Proxy, GenerateProxy) |
-            new TSLGeneratorCombinator(TopLevelElementProbabilities.Server, GenerateServer) |
-            new TSLGeneratorCombinator(TopLevelElementProbabilities.Module, GenerateModule) |
-            new TSLGeneratorCombinator(TopLevelElementProbabilities.Protocol, GenerateProtocol) |
-            new TSLGeneratorCombinator(TopLevelElementProbabilities.Cell, GenerateCell) |
-            new TSLGeneratorCombinator(TopLevelElementProbabilities.Struct, GenerateStruct) |
-            new TSLGeneratorCombinator(TopLevelElementProbabilities.Enum, GenerateEnum)
+            new TSLGeneratorCombinator(TopLevelElementProbabilities.Proxy, TSLGeneratorContextExtensions.GenerateProxy) |
+            new TSLGeneratorCombinator(TopLevelElementProbabilities.Server, TSLGeneratorContextExtensions.GenerateServer) |
+            new TSLGeneratorCombinator(TopLevelElementProbabilities.Module, TSLGeneratorContextExtensions.GenerateModule) |
+            new TSLGeneratorCombinator(TopLevelElementProbabilities.Protocol, TSLGeneratorContextExtensions.GenerateProtocol) |
+            new TSLGeneratorCombinator(TopLevelElementProbabilities.Cell, TSLGeneratorContextExtensions.GenerateCell) |
+            new TSLGeneratorCombinator(TopLevelElementProbabilities.Struct, TSLGeneratorContextExtensions.GenerateStruct) |
+            new TSLGeneratorCombinator(TopLevelElementProbabilities.Enum, TSLGeneratorContextExtensions.GenerateEnum)
         ).Generate;
         #endregion
     }
 
     public class TSLGeneratorCombinator
     {
-        public delegate void GenerateDelegate();
+        public delegate void GenerateDelegate(TSLGeneratorContext context);
         public double Probability { get; }
         public GenerateDelegate GenerateFunc { get; }
         public TSLGeneratorCombinator NextCombinator { get; }
