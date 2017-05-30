@@ -16,6 +16,9 @@ namespace TSLTestGenerator
         public const int MinTopLevelElementNumber = 20;
         public const int MaxTopLevelElementNumber = 100;
 
+        public const int MinEnumMemberNumber = 5;
+        public const int MaxEnumMemberNumber = 20;
+
         public static class TopLevelElementProbabilities
         {
             static TopLevelElementProbabilities()
@@ -89,6 +92,50 @@ namespace TSLTestGenerator
 
                 //public const int MinDepth = 1;
                 //public const int MaxDepth = 10;
+            }
+        }
+
+        public static class ProtocolProbabilities
+        {
+            public static class Type
+            {
+                public const double Syn = 0.40;
+                public const double Asyn = 0.40;
+                public const double Http = 0.40;
+            }
+
+            public static class Syn
+            {
+                public static class Request
+                {
+                }
+
+                public static class Response
+                {
+                }
+            }
+
+            public static class Asyn
+            {
+                public static class Request
+                {
+                }
+
+                public static class Response
+                {
+                }
+            }
+
+            public static class Http
+            {
+                public static class Request
+                {
+                    
+                }
+
+                public static class Response
+                {
+                }
             }
         }
     }
