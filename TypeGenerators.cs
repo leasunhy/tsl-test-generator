@@ -14,13 +14,12 @@ namespace TSLTestGenerator
             return context =>
             {
                 ITSLType ret = null;
-                while (ret == null)
+                for (int i = 0; i < NonNullRetries; ++i)
                 {
-                    var typeSelector = ContinuousUniform.Sample(context.MasterRandom, 0.0,
-                        TypeGenerator.CumulativeProbability);
-                    ret = context.TypeGenerator(typeSelector);
+                    ret = generator.DefaultGenerate(context);
+                    if (ret != null) return ret;
                 }
-                return ret;
+                throw new Exception("Too many retries before getting a non null type!");
             };
         }
         #endregion

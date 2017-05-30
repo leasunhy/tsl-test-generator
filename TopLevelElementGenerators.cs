@@ -87,7 +87,7 @@ namespace TSLTestGenerator
             var name = $"Enum{context.TopLevelElementCount + 1}";
             var memberNumber = DiscreteUniform.Sample(context.MasterRandom,
                 DefaultSettings.MinEnumMemberNumber, DefaultSettings.MaxEnumMemberNumber);
-            var members = Enumerable.Range(0, memberNumber).Select(i => name + i);
+            var members = Enumerable.Range(0, memberNumber).Select(i => $"{name}_{i}");
             var result = new TSLEnum(name, members);
             context.Enums.Add(result);
             return result;
@@ -112,7 +112,7 @@ namespace TSLTestGenerator
 
         public static IEnumerable<TSLProtocol> GetRandomDistinctProtocols(this TSLGeneratorContext context, int number)
         {
-            var protocols = DiscreteUniform.Samples(context.MasterRandom, 0, context.Protocols.Count)
+            var protocols = DiscreteUniform.Samples(context.MasterRandom, 0, context.Protocols.Count - 1)
                                            .Distinct()
                                            .Take(number)
                                            .Select(i => context.Protocols[i]);

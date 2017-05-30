@@ -22,6 +22,6 @@
         public ITSLType RequestType { get; }
         public ITSLType ResponseType { get; }
 
-        public override string ToString() => $"protocol {Name}\n{{ Type: {Type}; Request: {RequestType}; Response: {ResponseType} }}";
+        public override string ToString() => $"protocol {Name}\n{{\n  Type: {Type};\n  Request: {RequestType};\n  Response: {ResponseType};\n}}";
     }
 }

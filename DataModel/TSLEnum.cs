@@ -14,10 +14,10 @@ namespace TSLTestGenerator.DataModel
         public TSLEnum(string name, IEnumerable<string> values = null)
         {
             Name = name;
-            Members = (values ?? Enumerable.Range(0, 2).Select(i => name + i)).ToImmutableArray();
+            Members = (values ?? Enumerable.Range(0, 2).Select(i => $"{name}_{i}")).ToImmutableArray();
         }
 
         public override string ToString() =>
-            $"enum {Name}\n{{\n{string.Join("\n", Members)}\n}}";
+            $"enum {Name}\n{{\n  {string.Join(",\n  ", Members)}\n}}";
     }
 }

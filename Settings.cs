@@ -14,14 +14,16 @@ namespace TSLTestGenerator
         public const int MinFieldNumber = 0;
         public const int MaxFieldNumber = 100;
 
-        public const int MinTopLevelElementNumber = 20;
-        public const int MaxTopLevelElementNumber = 100;
+        public const int MinTopLevelElementNumber = 1;
+        public const int MaxTopLevelElementNumber = 2;
 
         public const int MinEnumMemberNumber = 5;
         public const int MaxEnumMemberNumber = 20;
 
         public const int MinProtocolNumber = 1;
         public const int MaxProtocolNumber = 100;
+
+        public const int NonNullRetries = 100;
 
         public static class TopLevelElementProbabilities
         {

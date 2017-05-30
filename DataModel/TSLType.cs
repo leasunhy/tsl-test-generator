@@ -12,8 +12,9 @@ namespace TSLTestGenerator.DataModel
 
     public class VoidType : ITSLType
     {
-        public string Name => "Void";
+        public string Name => "void";
         public bool DynamicLengthed { get { throw new NotSupportedException(); } }
+        public override string ToString() => Name;
 
         private VoidType() { }
         public static VoidType Instance { get; } = new VoidType();
@@ -21,8 +22,9 @@ namespace TSLTestGenerator.DataModel
 
     public class StreamType : ITSLType
     {
-        public string Name => "Stream";
+        public string Name => "stream";
         public bool DynamicLengthed { get { throw new NotSupportedException(); } }
+        public override string ToString() => Name;
 
         private StreamType() { }
         public static StreamType Instance { get; } = new StreamType();
@@ -32,6 +34,7 @@ namespace TSLTestGenerator.DataModel
     {
         public string Name { get; }
         public bool DynamicLengthed => false;
+        public override string ToString() => Name;
 
         public ArrayType(ITSLType elementType, int[] dimensions)
         {
@@ -45,6 +48,7 @@ namespace TSLTestGenerator.DataModel
     {
         public string Name { get; }
         public bool DynamicLengthed => true;
+        public override string ToString() => Name;
 
         public ListType(ITSLType elementType)
         {
@@ -56,14 +60,13 @@ namespace TSLTestGenerator.DataModel
     {
         public string Name { get; }
         public bool DynamicLengthed { get; }
+        public override string ToString() => Name;
 
         public AtomType(string name, bool dynamicLengthed)
         {
             this.Name = name;
             DynamicLengthed = dynamicLengthed;
         }
-
-        public override string ToString() => Name;
 
         public static readonly ImmutableArray<AtomType> FixedLengthAtomTypes = new[]
         {
