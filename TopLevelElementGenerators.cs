@@ -11,13 +11,13 @@ namespace TSLTestGenerator
         #region Total Generator
         public static readonly Func<double, TSLGeneratorContext, ITSLTopLevelElement> StaticTopLevelElementGenerator =
         (
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Proxy, TopLevelElementGenerators.GenerateProxy) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Server, TopLevelElementGenerators.GenerateServer) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Module, TopLevelElementGenerators.GenerateModule) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Protocol, TopLevelElementGenerators.GenerateProtocol) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Cell, TopLevelElementGenerators.GenerateCell) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Struct, TopLevelElementGenerators.GenerateStruct) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Enum, TopLevelElementGenerators.GenerateEnum)
+            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Proxy, GenerateProxy) |
+            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Server, GenerateServer) |
+            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Module, GenerateModule) |
+            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Protocol, GenerateProtocol) |
+            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Cell, GenerateCell) |
+            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Struct, GenerateStruct) |
+            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Enum, GenerateEnum)
         ).Generate;
         #endregion
 
@@ -50,26 +50,36 @@ namespace TSLTestGenerator
 
         public static ITSLTopLevelElement GenerateServer(this TSLGeneratorContext context)
         {
-            // TODO
-            return null;
+            var name = $"Server_{context.GeneratedElementCount + 1}";
+            var protocols = context.GetDefaultNumberOfDistinctProtocols();
+            var server = new TSLServer(name, protocols);
+            context.Servers.Add(server);
+            return server;
         }
 
         public static ITSLTopLevelElement GenerateProxy(this TSLGeneratorContext context)
         {
-            // TODO
-            return null;
+            var name = $"Proxy_{context.GeneratedElementCount + 1}";
+            var protocols = context.GetDefaultNumberOfDistinctProtocols();
+            var proxy = new TSLProxy(name, protocols);
+            context.Proxies.Add(proxy);
+            return proxy;
         }
 
         public static ITSLTopLevelElement GenerateModule(this TSLGeneratorContext context)
         {
-            // TODO
-            return null;
+            var name = $"Module_{context.GeneratedElementCount + 1}";
+            var protocols = context.GetDefaultNumberOfDistinctProtocols();
+            var module = new TSLModule(name, protocols);
+            context.Modules.Add(module);
+            return module;
         }
 
         public static ITSLTopLevelElement GenerateProtocol(this TSLGeneratorContext context)
         {
-            // TODO
-            return null;
+            var protocol = context.GenerateRandomProtocol();
+            context.Protocols.Add(protocol);
+            return protocol;
         }
 
         public static ITSLTopLevelElement GenerateEnum(this TSLGeneratorContext context)
@@ -78,7 +88,9 @@ namespace TSLTestGenerator
             var memberNumber = DiscreteUniform.Sample(context.MasterRandom,
                 DefaultSettings.MinEnumMemberNumber, DefaultSettings.MaxEnumMemberNumber);
             var members = Enumerable.Range(0, memberNumber).Select(i => name + i);
-            return new TSLEnum(name, members);
+            var result = new TSLEnum(name, members);
+            context.Enums.Add(result);
+            return result;
         }
         #endregion
 
@@ -96,6 +108,22 @@ namespace TSLTestGenerator
                 var field = new TSLField(type, name, optional, attributes: null);
                 yield return field;
             }
+        }
+
+        public static IEnumerable<TSLProtocol> GetRandomDistinctProtocols(this TSLGeneratorContext context, int number)
+        {
+            var protocols = DiscreteUniform.Samples(context.MasterRandom, 0, context.Protocols.Count)
+                                           .Distinct()
+                                           .Take(number)
+                                           .Select(i => context.Protocols[i]);
+            return protocols;
+        }
+
+        public static IEnumerable<TSLProtocol> GetDefaultNumberOfDistinctProtocols(this TSLGeneratorContext context)
+        {
+            var protocolNumber = DiscreteUniform.Sample(context.MasterRandom,
+                                                 DefaultSettings.MinProtocolNumber, DefaultSettings.MaxProtocolNumber);
+            return context.GetRandomDistinctProtocols(protocolNumber);
         }
         #endregion
     }

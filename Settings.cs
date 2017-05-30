@@ -20,6 +20,9 @@ namespace TSLTestGenerator
         public const int MinEnumMemberNumber = 5;
         public const int MaxEnumMemberNumber = 20;
 
+        public const int MinProtocolNumber = 1;
+        public const int MaxProtocolNumber = 100;
+
         public static class TopLevelElementProbabilities
         {
             static TopLevelElementProbabilities()
