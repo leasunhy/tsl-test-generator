@@ -114,18 +114,16 @@ namespace TSLTestGenerator
             {
                 public class Request : ReqRspProbabilitySpecifier
                 {
-                    public override double Atom { get; } = 0.30;
-                    public override double Struct { get; } = 0.50;
-                    public override double Void { get; } = 0.20;
+                    public override double Struct { get; } = 0.70;
+                    public override double Void { get; } = 0.30;
                     public override double Stream { get; } = 0.00;
                     public Request() { Check(); }
                 }
 
                 public class Response : ReqRspProbabilitySpecifier
                 {
-                    public override double Atom { get; } = 0.30;
-                    public override double Struct { get; } = 0.50;
-                    public override double Void { get; } = 0.20;
+                    public override double Struct { get; } = 0.70;
+                    public override double Void { get; } = 0.30;
                     public override double Stream { get; } = 0.00;
                     public Response() { Check(); }
                 }
@@ -135,16 +133,14 @@ namespace TSLTestGenerator
             {
                 public class Request : ReqRspProbabilitySpecifier
                 {
-                    public override double Atom { get; } = 0.30;
-                    public override double Struct { get; } = 0.50;
-                    public override double Void { get; } = 0.20;
+                    public override double Struct { get; } = 0.70;
+                    public override double Void { get; } = 0.30;
                     public override double Stream { get; } = 0.00;
                     public Request() { Check(); }
                 }
 
                 public class Response : ReqRspProbabilitySpecifier
                 {
-                    public override double Atom { get; } = 0.00;
                     public override double Struct { get; } = 0.00;
                     public override double Void { get; } = 1.00;
                     public override double Stream { get; } = 0.00;
@@ -156,18 +152,16 @@ namespace TSLTestGenerator
             {
                 public class Request : ReqRspProbabilitySpecifier
                 {
-                    public override double Atom { get; } = 0.20;
-                    public override double Struct { get; } = 0.30;
-                    public override double Void { get; } = 0.20;
+                    public override double Struct { get; } = 0.40;
+                    public override double Void { get; } = 0.30;
                     public override double Stream { get; } = 0.30;
                     public Request() { Check(); }
                 }
 
                 public class Response : ReqRspProbabilitySpecifier
                 {
-                    public override double Atom { get; } = 0.20;
-                    public override double Struct { get; } = 0.30;
-                    public override double Void { get; } = 0.20;
+                    public override double Struct { get; } = 0.40;
+                    public override double Void { get; } = 0.30;
                     public override double Stream { get; } = 0.30;
                     public Response() { Check(); }
                 }
@@ -177,11 +171,10 @@ namespace TSLTestGenerator
 
     public abstract class ReqRspProbabilitySpecifier
     {
-        public abstract double Atom { get; }
         public abstract double Struct { get; }
         public abstract double Void { get; }
         public abstract double Stream { get; }
 
-        protected void Check() => Debug.Assert(Math.Abs(Atom + Struct + Void + Stream - 1.0) < 1e-6);
+        protected void Check() => Debug.Assert(Math.Abs(Struct + Void + Stream - 1.0) < 1e-6);
     }
 }

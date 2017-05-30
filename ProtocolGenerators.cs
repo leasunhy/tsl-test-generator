@@ -22,8 +22,7 @@ namespace TSLTestGenerator
 
         public static TSLGeneratorCombinator<ITSLType> GetProtocolReqRspGenerator(ReqRspProbabilitySpecifier probabilities)
         {
-            return new TSLGeneratorCombinator<ITSLType>(probabilities.Atom, TypeGenerators.GenerateAtomType)|
-                   new TSLGeneratorCombinator<ITSLType>(probabilities.Stream, _ => StreamType.Instance) |
+            return new TSLGeneratorCombinator<ITSLType>(probabilities.Stream, _ => StreamType.Instance) |
                    new TSLGeneratorCombinator<ITSLType>(probabilities.Void, _ => VoidType.Instance) |
                    new TSLGeneratorCombinator<ITSLType>(probabilities.Struct, TypeGenerators.GenerateStructType);
         }
@@ -44,19 +43,19 @@ namespace TSLTestGenerator
             GetProtocolReqRspGenerator(new ProtocolProbabilities.Http.Response()).DefaultGenerate;
 
         public static TSLProtocol GenerateSynProtocol(this TSLGeneratorContext context) =>
-            new TSLProtocol(name: $"SynProtocol{context.GeneratedElementCount + 1}",
+            new TSLProtocol(name: $"SynProtocol{context.TopLevelElementCount + 1}",
                             type: TSLProtocolType.Syn,
                             requestType: SynRequestTypeGenerator(context),
                             responseType: SynResponseTypeGenerator(context));
 
         public static TSLProtocol GenerateAsynProtocol(this TSLGeneratorContext context) =>
-            new TSLProtocol(name: $"AsynProtocol{context.GeneratedElementCount + 1}",
+            new TSLProtocol(name: $"AsynProtocol{context.TopLevelElementCount + 1}",
                             type: TSLProtocolType.Asyn,
                             requestType: AsynRequestTypeGenerator(context),
                             responseType: AsynResponseTypeGenerator(context));
 
         public static TSLProtocol GenerateHttpProtocol(this TSLGeneratorContext context) =>
-            new TSLProtocol(name: $"HttpProtocol{context.GeneratedElementCount + 1}",
+            new TSLProtocol(name: $"HttpProtocol{context.TopLevelElementCount + 1}",
                             type: TSLProtocolType.Http,
                             requestType: HttpRequestTypeGenerator(context),
                             responseType: HttpResponseTypeGenerator(context));

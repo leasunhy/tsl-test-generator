@@ -38,14 +38,15 @@ namespace TSLTestGenerator
             new TSLGeneratorCombinator<ITSLType>(ContainerProbabilities.List.ElementArray, GenerateArrayType) |
             new TSLGeneratorCombinator<ITSLType>(ContainerProbabilities.List.ElementList, GenerateListType) |
             new TSLGeneratorCombinator<ITSLType>(ContainerProbabilities.List.ElementStruct, GenerateStructType);
-        #endregion
 
         public static readonly Func<TSLGeneratorContext, ITSLType> GenerateRandomTypeDelegate = GenerateNonNullType(TypeGenerator);
         public static ITSLType GenerateRandomType(this TSLGeneratorContext context) => GenerateRandomTypeDelegate(context);
 
         public static readonly Func<TSLGeneratorContext, ITSLType> GenerateListElementTypeDelegate = GenerateNonNullType(ListElementTypeGenerator);
         public static ITSLType GenerateListElementType(this TSLGeneratorContext context) => GenerateListElementTypeDelegate(context);
+        #endregion
 
+        #region Generators
         public static ITSLType GenerateAtomType(this TSLGeneratorContext context)
         {
             // upper bound for DiscreteUniform.Sample() is inclusive
@@ -89,12 +90,12 @@ namespace TSLTestGenerator
             var selector = DiscreteUniform.Sample(context.MasterRandom, 0, context.Structs.Count - 1);
             return context.Structs[selector];
         }
+        #endregion
     }
 
     public static class FixedLengthTypeGenerators
     {
         #region Total Generator
-
         public static readonly TSLGeneratorCombinator<ITSLType> FixedLengthTypeGenerator =
             new TSLGeneratorCombinator<ITSLType>(TypeProbabilities.Enum, GenerateFixedLengthEnumType) |
             new TSLGeneratorCombinator<ITSLType>(TypeProbabilities.Atom, GenerateFixedLengthAtomType) |
@@ -105,7 +106,6 @@ namespace TSLTestGenerator
             new TSLGeneratorCombinator<ITSLType>(ContainerProbabilities.Array.ElementEnum, GenerateFixedLengthEnumType) |
             new TSLGeneratorCombinator<ITSLType>(ContainerProbabilities.Array.ElementAtom, GenerateFixedLengthAtomType) |
             new TSLGeneratorCombinator<ITSLType>(ContainerProbabilities.Array.ElementStruct, GenerateFixedLengthStructType);
-        #endregion
 
         public static readonly Func<TSLGeneratorContext, ITSLType> GenerateRandomFixedLengthTypeDelegate =
             TypeGenerators.GenerateNonNullType(FixedLengthTypeGenerator);
@@ -118,7 +118,9 @@ namespace TSLTestGenerator
         public static ITSLType GenerateRandomArrayElementType(this TSLGeneratorContext context)
             => GenerateRandomArrayElementTypeDelegate(context);
 
+        #endregion
 
+        #region Generators
         public static ITSLType GenerateFixedLengthAtomType(this TSLGeneratorContext context)
         {
             // upper bound for DiscreteUniform.Sample() is inclusive
@@ -139,5 +141,6 @@ namespace TSLTestGenerator
             var selector = DiscreteUniform.Sample(context.MasterRandom, 0, context.FixedLengthStructs.Count - 1);
             return context.FixedLengthStructs[selector];
         }
+        #endregion
     }
 }
