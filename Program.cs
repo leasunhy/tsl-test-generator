@@ -8,7 +8,7 @@ using CommandLine.Text;
 
 namespace TSLTestGenerator
 {
-    class Program
+    static class Program
     {
         static void Main(string[] args)
         {
