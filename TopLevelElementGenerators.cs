@@ -9,6 +9,8 @@ namespace TSLTestGenerator
     public static class TopLevelElementGenerators
     {
         #region Total Generator
+        // NOTE(leasunhy): the `typeSelector` for this generator is the ratio of elements generated,
+        //                 so enums will be generated first, and then struct, and then cell, etc.
         public static readonly Func<double, TSLGeneratorContext, ITSLTopLevelElement> StaticTopLevelElementGenerator =
         (
             new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Proxy, GenerateProxy) |
