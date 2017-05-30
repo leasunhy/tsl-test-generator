@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -99,42 +100,81 @@ namespace TSLTestGenerator
         {
             public static class Type
             {
-                public const double Syn = 0.40;
-                public const double Asyn = 0.40;
-                public const double Http = 0.40;
+                public const double SynProtocol = 0.40;
+                public const double AsynProtocol = 0.40;
+                public const double HttpProtocol = 0.40;
+            }
+
+            public abstract class ReqRspProbabilitySpecifier
+            {
+                public abstract double Atom { get; }
+                public abstract double Struct { get; }
+                public abstract double Void { get; }
+                public abstract double Stream { get; }
+
+                protected void Check() => Debug.Assert(Math.Abs(Atom + Struct + Void + Stream - 1.0) < 1e-6);
             }
 
             public static class Syn
             {
-                public static class Request
+                public class Request : ReqRspProbabilitySpecifier
                 {
+                    public override double Atom { get; } = 0.30;
+                    public override double Struct { get; } = 0.50;
+                    public override double Void { get; } = 0.20;
+                    public override double Stream { get; } = 0.00;
+                    public Request() { Check(); }
                 }
 
-                public static class Response
+                public class Response : ReqRspProbabilitySpecifier
                 {
+                    public override double Atom { get; } = 0.30;
+                    public override double Struct { get; } = 0.50;
+                    public override double Void { get; } = 0.20;
+                    public override double Stream { get; } = 0.00;
+                    public Response() { Check(); }
                 }
             }
 
             public static class Asyn
             {
-                public static class Request
+                public class Request : ReqRspProbabilitySpecifier
                 {
+                    public override double Atom { get; } = 0.30;
+                    public override double Struct { get; } = 0.50;
+                    public override double Void { get; } = 0.20;
+                    public override double Stream { get; } = 0.00;
+                    public Request() { Check(); }
                 }
 
-                public static class Response
+                public class Response : ReqRspProbabilitySpecifier
                 {
+                    public override double Atom { get; } = 0.00;
+                    public override double Struct { get; } = 0.00;
+                    public override double Void { get; } = 1.00;
+                    public override double Stream { get; } = 0.00;
+                    public Response() { Check(); }
                 }
             }
 
             public static class Http
             {
-                public static class Request
+                public class Request : ReqRspProbabilitySpecifier
                 {
-                    
+                    public override double Atom { get; } = 0.20;
+                    public override double Struct { get; } = 0.30;
+                    public override double Void { get; } = 0.20;
+                    public override double Stream { get; } = 0.30;
+                    public Request() { Check(); }
                 }
 
-                public static class Response
+                public class Response : ReqRspProbabilitySpecifier
                 {
+                    public override double Atom { get; } = 0.20;
+                    public override double Struct { get; } = 0.30;
+                    public override double Void { get; } = 0.20;
+                    public override double Stream { get; } = 0.30;
+                    public Response() { Check(); }
                 }
             }
         }

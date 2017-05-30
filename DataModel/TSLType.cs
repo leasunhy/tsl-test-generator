@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
+using NUnit.Framework;
 
 namespace TSLTestGenerator.DataModel
 {
@@ -7,6 +8,15 @@ namespace TSLTestGenerator.DataModel
     {
         string Name { get; }
         bool DynamicLengthed { get; }
+    }
+
+    public class VoidType : ITSLType
+    {
+        public string Name => "Void";
+        public bool DynamicLengthed { get { throw new NotSupportedException(); } }
+
+        private VoidType() { }
+        public static VoidType Instance { get; } = new VoidType();
     }
 
     public class ArrayType : ITSLType
