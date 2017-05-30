@@ -123,8 +123,8 @@ namespace TSLTestGenerator
         public static ITSLType GenerateFixedLengthAtomType(this TSLGeneratorContext context)
         {
             // upper bound for DiscreteUniform.Sample() is inclusive
-            var selector = DiscreteUniform.Sample(context.MasterRandom, 0, AtomType.AtomTypes.Length - 1);
-            return AtomType.AtomTypes[selector];
+            var selector = DiscreteUniform.Sample(context.MasterRandom, 0, AtomType.FixedLengthAtomTypes.Length - 1);
+            return AtomType.FixedLengthAtomTypes[selector];
         }
 
         public static ITSLType GenerateFixedLengthEnumType(this TSLGeneratorContext context)

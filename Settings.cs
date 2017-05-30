@@ -108,16 +108,6 @@ namespace TSLTestGenerator
                 public const double HttpProtocol = 0.40;
             }
 
-            public abstract class ReqRspProbabilitySpecifier
-            {
-                public abstract double Atom { get; }
-                public abstract double Struct { get; }
-                public abstract double Void { get; }
-                public abstract double Stream { get; }
-
-                protected void Check() => Debug.Assert(Math.Abs(Atom + Struct + Void + Stream - 1.0) < 1e-6);
-            }
-
             public static class Syn
             {
                 public class Request : ReqRspProbabilitySpecifier
@@ -181,5 +171,15 @@ namespace TSLTestGenerator
                 }
             }
         }
+    }
+
+    public abstract class ReqRspProbabilitySpecifier
+    {
+        public abstract double Atom { get; }
+        public abstract double Struct { get; }
+        public abstract double Void { get; }
+        public abstract double Stream { get; }
+
+        protected void Check() => Debug.Assert(Math.Abs(Atom + Struct + Void + Stream - 1.0) < 1e-6);
     }
 }

@@ -61,10 +61,12 @@
     <Compile Include="DataModel\TSLType.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ProtocolGenerators.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Tests\DataModelTests\CommunicationInstanceTests.cs" />
     <Compile Include="TopLevelElementGenerators.cs" />
     <Compile Include="TSLGenerator.cs" />
+    <Compile Include="TSLGeneratorCombinator.cs" />
     <Compile Include="TypeGenerators.cs" />
   </ItemGroup>
   <ItemGroup>

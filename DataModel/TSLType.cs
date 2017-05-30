@@ -19,6 +19,15 @@ namespace TSLTestGenerator.DataModel
         public static VoidType Instance { get; } = new VoidType();
     }
 
+    public class StreamType : ITSLType
+    {
+        public string Name => "Stream";
+        public bool DynamicLengthed { get { throw new NotSupportedException(); } }
+
+        private StreamType() { }
+        public static StreamType Instance { get; } = new StreamType();
+    }
+
     public class ArrayType : ITSLType
     {
         public string Name { get; }
@@ -56,7 +65,26 @@ namespace TSLTestGenerator.DataModel
 
         public override string ToString() => Name;
 
-        public static readonly ImmutableArray<AtomType> AtomTypes = new []
+        public static readonly ImmutableArray<AtomType> FixedLengthAtomTypes = new[]
+        {
+            new AtomType("byte", false),
+            new AtomType("sbyte", false),
+            new AtomType("bool", false),
+            new AtomType("char", false),
+            new AtomType("short", false),
+            new AtomType("ushort", false),
+            new AtomType("int", false),
+            new AtomType("uint", false),
+            new AtomType("long", false),
+            new AtomType("ulong", false),
+            new AtomType("float", false),
+            new AtomType("double", false),
+            new AtomType("decimal", false),
+            new AtomType("DateTime", false),
+            new AtomType("Guid", false),
+        }.ToImmutableArray();
+
+        public static readonly ImmutableArray<AtomType> AtomTypes = new[]
         {
             new AtomType("byte", false),
             new AtomType("sbyte", false),
@@ -76,5 +104,6 @@ namespace TSLTestGenerator.DataModel
             new AtomType("string", true),
             new AtomType("u8string", true),
         }.ToImmutableArray();
+
     }
 }
