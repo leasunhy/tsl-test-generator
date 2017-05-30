@@ -18,11 +18,7 @@ namespace TSLTestGenerator
             new TSLGeneratorCombinator<TSLProtocol>(ProtocolProbabilities.Type.HttpProtocol, GenerateHttpProtocol);
 
         public static TSLProtocol GenerateRandomProtocol(this TSLGeneratorContext context)
-        {
-            double typeSelector = ContinuousUniform.Sample(context.MasterRandom,
-                0.0, ProtocolGenerator.CumulativeProbability);
-            return ProtocolGenerator.Generate(typeSelector, context);
-        }
+            => ProtocolGenerator.DefaultGenerate(context);
 
         public static TSLGeneratorCombinator<ITSLType> GetProtocolReqRspGenerator(ReqRspProbabilitySpecifier probabilities)
         {

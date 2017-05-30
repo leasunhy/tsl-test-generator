@@ -79,8 +79,6 @@ namespace TSLTestGenerator
             GeneratedElementCount += 1;
             return ret;
         };
-
-        public Func<double, ITSLType> TypeGenerator => typeSelector => TypeGenerators.TypeGenerator.Generate(typeSelector, this);
         #endregion
     }
 }
