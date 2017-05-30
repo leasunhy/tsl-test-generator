@@ -41,8 +41,11 @@ namespace TSLTestGenerator
             new TSLGeneratorCombinator<ITSLType>(ContainerProbabilities.List.ElementStruct, GenerateStructType);
         #endregion
 
-        public static readonly Func<TSLGeneratorContext, ITSLType> GenerateRandomType = GenerateNonNullType(TypeGenerator);
-        public static readonly Func<TSLGeneratorContext, ITSLType> GenerateListElementType = GenerateNonNullType(ListElementTypeGenerator);
+        public static readonly Func<TSLGeneratorContext, ITSLType> GenerateRandomTypeDelegate = GenerateNonNullType(TypeGenerator);
+        public static ITSLType GenerateRandomType(this TSLGeneratorContext context) => GenerateRandomTypeDelegate(context);
+
+        public static readonly Func<TSLGeneratorContext, ITSLType> GenerateListElementTypeDelegate = GenerateNonNullType(ListElementTypeGenerator);
+        public static ITSLType GenerateListElementType(this TSLGeneratorContext context) => GenerateListElementTypeDelegate(context);
 
         public static ITSLType GenerateAtomType(this TSLGeneratorContext context)
         {
@@ -61,13 +64,13 @@ namespace TSLTestGenerator
 
         public static ITSLType GenerateListType(this TSLGeneratorContext context)
         {
-            var elementType = GenerateListElementType(context);
+            var elementType = context.GenerateListElementType();
             return new ListType(elementType);
         }
 
         public static ITSLType GenerateArrayType(this TSLGeneratorContext context)
         {
-            var elementType = FixedLengthTypeGenerators.GenerateRandomArrayElementType(context);
+            var elementType = context.GenerateRandomArrayElementType();
             var dimension = DiscreteUniform.Sample(
                 context.MasterRandom,
                 ContainerProbabilities.Array.MinDimension,
@@ -105,11 +108,17 @@ namespace TSLTestGenerator
             new TSLGeneratorCombinator<ITSLType>(ContainerProbabilities.Array.ElementStruct, GenerateFixedLengthStructType);
         #endregion
 
-        public static readonly Func<TSLGeneratorContext, ITSLType> GenerateRandomFixedLengthType =
+        public static readonly Func<TSLGeneratorContext, ITSLType> GenerateRandomFixedLengthTypeDelegate =
             TypeGenerators.GenerateNonNullType(FixedLengthTypeGenerator);
 
-        public static readonly Func<TSLGeneratorContext, ITSLType> GenerateRandomArrayElementType =
+        public static ITSLType GenerateRandomFixedLengthType(this TSLGeneratorContext context)
+            => GenerateRandomFixedLengthTypeDelegate(context);
+
+        public static readonly Func<TSLGeneratorContext, ITSLType> GenerateRandomArrayElementTypeDelegate =
             TypeGenerators.GenerateNonNullType(ArrayElementTypeGenerator);
+        public static ITSLType GenerateRandomArrayElementType(this TSLGeneratorContext context)
+            => GenerateRandomArrayElementTypeDelegate(context);
+
 
         public static ITSLType GenerateFixedLengthAtomType(this TSLGeneratorContext context)
         {

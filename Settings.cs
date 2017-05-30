@@ -87,9 +87,8 @@ namespace TSLTestGenerator
                 public const double ElementArray = 0.15;
                 public const double ElementList = 0.15;
 
-                // to test against lists/arrays of diverse lengths, we use uniform distribution instead of normal distributions
-                public const int MinDepth = 1;
-                public const int MaxDepth = 10;
+                //public const int MinDepth = 1;
+                //public const int MaxDepth = 10;
             }
         }
     }
