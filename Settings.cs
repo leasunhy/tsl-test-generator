@@ -14,8 +14,8 @@ namespace TSLTestGenerator
         public const int MinFieldNumber = 0;
         public const int MaxFieldNumber = 100;
 
-        public const int MinTopLevelElementNumber = 1;
-        public const int MaxTopLevelElementNumber = 2;
+        public const int MinTopLevelElementNumber = 10;
+        public const int MaxTopLevelElementNumber = 10;
 
         public const int MinEnumMemberNumber = 5;
         public const int MaxEnumMemberNumber = 20;

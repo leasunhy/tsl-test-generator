@@ -15,7 +15,7 @@ namespace TSLTestGenerator.DataModel
         public ImmutableArray<TSLProtocol> Protocols { get; }
         public string Name { get; }
 
-        public override string ToString() => $"{Name}\n{{ {string.Join("\n", Protocols.Select(p => $"protocol {p};"))} }}";
+        public override string ToString() => $"{Name}\n{{\n{string.Join("\n", Protocols.Select(p => $"  protocol {p.Name};"))}\n}}";
     }
 
     public class TSLServer : TSLCommunicationInstance, ITSLTopLevelElement

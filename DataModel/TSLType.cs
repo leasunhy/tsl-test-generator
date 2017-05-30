@@ -40,7 +40,7 @@ namespace TSLTestGenerator.DataModel
         {
             if (elementType.DynamicLengthed)
                 throw new ArgumentOutOfRangeException(nameof(elementType), "Element type can't be dynamic lengthed!");
-            Name = $"{elementType}[{string.Join(", ", dimensions)}]";
+            Name = $"{elementType.Name}[{string.Join(", ", dimensions)}]";
         }
     }
 
@@ -52,7 +52,7 @@ namespace TSLTestGenerator.DataModel
 
         public ListType(ITSLType elementType)
         {
-            Name = $"List<{elementType}>";
+            Name = $"List<{elementType.Name}>";
         }
     }
 

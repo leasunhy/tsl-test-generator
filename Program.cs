@@ -10,7 +10,7 @@ namespace TSLTestGenerator
     {
         static void Main(string[] args)
         {
-            Console.WriteLine(TSLGenerator.GetRandomTSLScript(2333));
+            Console.WriteLine(TSLGenerator.GetRandomTSLScript());
         }
     }
 }

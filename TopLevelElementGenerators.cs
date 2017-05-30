@@ -112,9 +112,11 @@ namespace TSLTestGenerator
 
         public static IEnumerable<TSLProtocol> GetRandomDistinctProtocols(this TSLGeneratorContext context, int number)
         {
+            if (context.Protocols.Count == 0) return Enumerable.Empty<TSLProtocol>();
+            if (number > context.Protocols.Count) number = context.Protocols.Count;
             var protocols = DiscreteUniform.Samples(context.MasterRandom, 0, context.Protocols.Count - 1)
-                                           .Distinct()
                                            .Take(number)
+                                           .Distinct()  // may return fewer than number of protocols
                                            .Select(i => context.Protocols[i]);
             return protocols;
         }
