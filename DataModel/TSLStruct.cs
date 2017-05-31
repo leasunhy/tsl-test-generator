@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 
 namespace TSLTestGenerator.DataModel
@@ -52,8 +54,10 @@ namespace TSLTestGenerator.DataModel
     {
         public string Name { get; }
         public bool DynamicLengthed { get; }
+        public TSLFieldTypes FieldType => TSLFieldTypes.Struct;
         public ImmutableArray<TSLAttribute> Attributes { get; }
         public ImmutableArray<TSLField> Fields { get; }
+        public int Depth { get; }
 
         public TSLStruct(string name, IEnumerable<TSLField> fields, IEnumerable<TSLAttribute> attributes = null)
         {
@@ -61,6 +65,11 @@ namespace TSLTestGenerator.DataModel
             Fields = fields.ToImmutableArray();
             DynamicLengthed = Fields.Any(f => f.DynamicLengthed);
             Attributes = (attributes?.ToImmutableArray()).GetValueOrDefault();
+            Depth = Fields.Select(f => f.Type)
+                          .Where(t => t.FieldType == TSLFieldTypes.Struct)
+                          .Cast<TSLStruct>()
+                          .Aggregate(0, (max, s) => Math.Max(max, s.Depth)) + 1;
+            Debug.Assert(Depth <= DefaultSettings.StructSettings.MaxDepth);
         }
 
         public override string ToString()

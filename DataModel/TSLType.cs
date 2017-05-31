@@ -4,16 +4,28 @@ using NUnit.Framework;
 
 namespace TSLTestGenerator.DataModel
 {
+    public enum TSLFieldTypes
+    {
+        Atom,
+        Struct,
+        Enum,
+        List,
+        Array,
+        NonField,
+    }
+
     public interface ITSLType
     {
         string Name { get; }
         bool DynamicLengthed { get; }
+        TSLFieldTypes FieldType { get; }
     }
 
     public class VoidType : ITSLType
     {
         public string Name => "void";
         public bool DynamicLengthed { get { throw new NotSupportedException(); } }
+        public TSLFieldTypes FieldType => TSLFieldTypes.NonField;
         public override string ToString() => Name;
 
         private VoidType() { }
@@ -24,6 +36,7 @@ namespace TSLTestGenerator.DataModel
     {
         public string Name => "stream";
         public bool DynamicLengthed { get { throw new NotSupportedException(); } }
+        public TSLFieldTypes FieldType => TSLFieldTypes.NonField;
         public override string ToString() => Name;
 
         private StreamType() { }
@@ -34,6 +47,7 @@ namespace TSLTestGenerator.DataModel
     {
         public string Name { get; }
         public bool DynamicLengthed => false;
+        public TSLFieldTypes FieldType => TSLFieldTypes.Array;
         public override string ToString() => Name;
 
         public ArrayType(ITSLType elementType, int[] dimensions)
@@ -48,6 +62,7 @@ namespace TSLTestGenerator.DataModel
     {
         public string Name { get; }
         public bool DynamicLengthed => true;
+        public TSLFieldTypes FieldType => TSLFieldTypes.List;
         public override string ToString() => Name;
 
         public ListType(ITSLType elementType)
@@ -60,6 +75,7 @@ namespace TSLTestGenerator.DataModel
     {
         public string Name { get; }
         public bool DynamicLengthed { get; }
+        public TSLFieldTypes FieldType => TSLFieldTypes.Atom;
         public override string ToString() => Name;
 
         public AtomType(string name, bool dynamicLengthed)

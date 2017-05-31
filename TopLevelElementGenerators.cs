@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using MathNet.Numerics.Distributions;
 using TSLTestGenerator.DataModel;
+using static TSLTestGenerator.DefaultSettings;
 
 namespace TSLTestGenerator
 {
@@ -13,13 +14,13 @@ namespace TSLTestGenerator
         //                 so enums will be generated first, and then struct, and then cell, etc.
         public static readonly Func<double, TSLGeneratorContext, ITSLTopLevelElement> StaticTopLevelElementGenerator =
         (
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Proxy, GenerateProxy) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Server, GenerateServer) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Module, GenerateModule) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Protocol, GenerateProtocol) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Cell, GenerateCell) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Struct, GenerateStruct) |
-            new TSLGeneratorCombinator<ITSLTopLevelElement>(DefaultSettings.TopLevelElementProbabilities.Enum, GenerateEnum)
+            new TSLGeneratorCombinator<ITSLTopLevelElement>(TopLevelElementProbabilities.Proxy, GenerateProxy) |
+            new TSLGeneratorCombinator<ITSLTopLevelElement>(TopLevelElementProbabilities.Server, GenerateServer) |
+            new TSLGeneratorCombinator<ITSLTopLevelElement>(TopLevelElementProbabilities.Module, GenerateModule) |
+            new TSLGeneratorCombinator<ITSLTopLevelElement>(TopLevelElementProbabilities.Protocol, GenerateProtocol) |
+            new TSLGeneratorCombinator<ITSLTopLevelElement>(TopLevelElementProbabilities.Cell, GenerateCell) |
+            new TSLGeneratorCombinator<ITSLTopLevelElement>(TopLevelElementProbabilities.Struct, GenerateStruct) |
+            new TSLGeneratorCombinator<ITSLTopLevelElement>(TopLevelElementProbabilities.Enum, GenerateEnum)
         ).Generate;
         #endregion
 
@@ -27,7 +28,7 @@ namespace TSLTestGenerator
         public static ITSLTopLevelElement GenerateStruct(this TSLGeneratorContext context)
         {
             var name = $"Struct_{context.TopLevelElementCount + 1}";
-            var numberOfFields = DiscreteUniform.Sample(context.MasterRandom, DefaultSettings.MinFieldNumber, DefaultSettings.MaxFieldNumber);
+            var numberOfFields = DiscreteUniform.Sample(context.MasterRandom, StructSettings.MinFieldNumber, StructSettings.MaxFieldNumber);
             var fields = context.RandomFields().Take(numberOfFields);
             var result = new TSLStruct(name, fields);
             context.Structs.Add(result);
@@ -39,14 +40,14 @@ namespace TSLTestGenerator
         public static ITSLTopLevelElement GenerateCell(this TSLGeneratorContext context)
         {
             var name = $"CellStruct_{context.TopLevelElementCount + 1}";
-            var numberOfFields = DiscreteUniform.Sample(context.MasterRandom, DefaultSettings.MinFieldNumber, DefaultSettings.MaxFieldNumber);
+            var numberOfFields = DiscreteUniform.Sample(context.MasterRandom, StructSettings.MinFieldNumber, StructSettings.MaxFieldNumber);
             var fields = context.RandomFields().Take(numberOfFields);
             var result = new TSLCell(name, fields);
             context.Cells.Add(result);
-            // also treat cells as structs
-            context.Structs.Add(result);
-            if (!result.DynamicLengthed)
-                context.FixedLengthStructs.Add(result);
+            //// also treat cells as structs
+            //context.Structs.Add(result);
+            //if (!result.DynamicLengthed)
+            //    context.FixedLengthStructs.Add(result);
             return result;
         }
 
@@ -88,7 +89,7 @@ namespace TSLTestGenerator
         {
             var name = $"Enum{context.TopLevelElementCount + 1}";
             var memberNumber = DiscreteUniform.Sample(context.MasterRandom,
-                DefaultSettings.MinEnumMemberNumber, DefaultSettings.MaxEnumMemberNumber);
+                EnumSettings.MinEnumMemberNumber, EnumSettings.MaxEnumMemberNumber);
             var members = Enumerable.Range(0, memberNumber).Select(i => $"{name}_{i}");
             var result = new TSLEnum(name, members);
             context.Enums.Add(result);
@@ -102,7 +103,7 @@ namespace TSLTestGenerator
             while (true)
             {
                 var optional = ContinuousUniform.Sample(context.MasterRandom, 0.0, 1.0) <
-                               DefaultSettings.FieldProbabilities.OptionalFieldProbability;
+                               StructSettings.FieldProbabilities.OptionalFieldProbability;
                 var name = $"field{context.GeneratedElementCount}";
                 var type = context.GenerateRandomType();
                 context.GeneratedElementCount += 1;
@@ -126,7 +127,7 @@ namespace TSLTestGenerator
         public static IEnumerable<TSLProtocol> GetDefaultNumberOfDistinctProtocols(this TSLGeneratorContext context)
         {
             var protocolNumber = DiscreteUniform.Sample(context.MasterRandom,
-                                                 DefaultSettings.MinProtocolNumber, DefaultSettings.MaxProtocolNumber);
+                                                 CommunicationInstanceSettings.MinProtocolNumber, CommunicationInstanceSettings.MaxProtocolNumber);
             return context.GetRandomDistinctProtocols(protocolNumber);
         }
         #endregion

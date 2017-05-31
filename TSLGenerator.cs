@@ -28,7 +28,7 @@ namespace TSLTestGenerator
 
             // generate the top level elements = Struct | Cell | Enum | Protocol | Server | Proxy | Module
             var context = new TSLGeneratorContext(masterRandom);
-            var topLevelElementNumber = DiscreteUniform.Sample(masterRandom, MinTopLevelElementNumber, MaxTopLevelElementNumber);
+            var topLevelElementNumber = DiscreteUniform.Sample(masterRandom, GeneralSettings.MinTopLevelElementNumber, GeneralSettings.MaxTopLevelElementNumber);
 
             // NOTE(leasunhy): to ensure the order of the types of the generated elements, we use (i/total) as typeSelector
             //var topLevelElementTypeDist = new ContinuousUniform(0.0, 1.0, new Random(masterRandom.Next()));

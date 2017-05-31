@@ -14,7 +14,7 @@ namespace TSLTestGenerator
             return context =>
             {
                 ITSLType ret = null;
-                for (int i = 0; i < NonNullRetries; ++i)
+                for (int i = 0; i < GeneralSettings.NonNullRetries; ++i)
                 {
                     ret = generator.DefaultGenerate(context);
                     if (ret != null) return ret;
@@ -26,11 +26,11 @@ namespace TSLTestGenerator
 
         #region Total Generator
         public static readonly TSLGeneratorCombinator<ITSLType> TypeGenerator =
-            new TSLGeneratorCombinator<ITSLType>(TypeProbabilities.Enum, GenerateEnumType) |
-            new TSLGeneratorCombinator<ITSLType>(TypeProbabilities.Atom, GenerateAtomType) |
-            new TSLGeneratorCombinator<ITSLType>(TypeProbabilities.ContainerArray, GenerateArrayType) |
-            new TSLGeneratorCombinator<ITSLType>(TypeProbabilities.ContainerList, GenerateListType) |
-            new TSLGeneratorCombinator<ITSLType>(TypeProbabilities.Struct, GenerateStructType);
+            new TSLGeneratorCombinator<ITSLType>(StructSettings.FieldProbabilities.Enum, GenerateEnumType) |
+            new TSLGeneratorCombinator<ITSLType>(StructSettings.FieldProbabilities.Atom, GenerateAtomType) |
+            new TSLGeneratorCombinator<ITSLType>(StructSettings.FieldProbabilities.ContainerArray, GenerateArrayType) |
+            new TSLGeneratorCombinator<ITSLType>(StructSettings.FieldProbabilities.ContainerList, GenerateListType) |
+            new TSLGeneratorCombinator<ITSLType>(StructSettings.FieldProbabilities.Struct, GenerateStructType);
 
         public static readonly TSLGeneratorCombinator<ITSLType> ListElementTypeGenerator =
             new TSLGeneratorCombinator<ITSLType>(ContainerProbabilities.List.ElementEnum, GenerateEnumType) |
@@ -97,10 +97,10 @@ namespace TSLTestGenerator
     {
         #region Total Generator
         public static readonly TSLGeneratorCombinator<ITSLType> FixedLengthTypeGenerator =
-            new TSLGeneratorCombinator<ITSLType>(TypeProbabilities.Enum, GenerateFixedLengthEnumType) |
-            new TSLGeneratorCombinator<ITSLType>(TypeProbabilities.Atom, GenerateFixedLengthAtomType) |
-            new TSLGeneratorCombinator<ITSLType>(TypeProbabilities.ContainerArray, GenerateFixedLengthArrayType) |
-            new TSLGeneratorCombinator<ITSLType>(TypeProbabilities.Struct, GenerateFixedLengthStructType);
+            new TSLGeneratorCombinator<ITSLType>(StructSettings.FieldProbabilities.Enum, GenerateFixedLengthEnumType) |
+            new TSLGeneratorCombinator<ITSLType>(StructSettings.FieldProbabilities.Atom, GenerateFixedLengthAtomType) |
+            new TSLGeneratorCombinator<ITSLType>(StructSettings.FieldProbabilities.ContainerArray, GenerateFixedLengthArrayType) |
+            new TSLGeneratorCombinator<ITSLType>(StructSettings.FieldProbabilities.Struct, GenerateFixedLengthStructType);
 
         public static readonly TSLGeneratorCombinator<ITSLType> ArrayElementTypeGenerator =
             new TSLGeneratorCombinator<ITSLType>(ContainerProbabilities.Array.ElementEnum, GenerateFixedLengthEnumType) |

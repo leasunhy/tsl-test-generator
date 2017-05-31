@@ -1,29 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.Design;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Diagnostics;
 
 namespace TSLTestGenerator
 {
     public static class DefaultSettings
     {
-
-        public const int MinFieldNumber = 0;
-        public const int MaxFieldNumber = 100;
-
-        public const int MinTopLevelElementNumber = 10;
-        public const int MaxTopLevelElementNumber = 100;
-
-        public const int MinEnumMemberNumber = 5;
-        public const int MaxEnumMemberNumber = 20;
-
-        public const int MinProtocolNumber = 1;
-        public const int MaxProtocolNumber = 100;
-
-        public const int NonNullRetries = 100;
+        public static class GeneralSettings
+        {
+            public const int MinTopLevelElementNumber = 10;
+            public const int MaxTopLevelElementNumber = 100;
+            public const int NonNullRetries = 100;
+        }
 
         public static class TopLevelElementProbabilities
         {
@@ -44,24 +31,28 @@ namespace TSLTestGenerator
             public const double Module = 0.20;
         }
 
-        public static class FieldProbabilities
+        public static class StructSettings
         {
-            public const double OptionalFieldProbability = 0.30;
-        }
-
-        public static class TypeProbabilities
-        {
-            static TypeProbabilities()
+            public static class FieldProbabilities
             {
-                Debug.Assert(Math.Abs(Atom + Struct + Enum + ContainerList + ContainerArray - 1.0) < 1e-6);
+                static FieldProbabilities()
+                {
+                    Debug.Assert(Math.Abs(Atom + Struct + Enum + ContainerList + ContainerArray - 1.0) < 1e-6);
+                }
+
+                // type probabilities; must sum to 1.00
+                public const double Atom = 0.40;
+                public const double Struct = 0.15;
+                public const double Enum = 0.05;
+                public const double ContainerList = 0.20;
+                public const double ContainerArray = 0.20;
+
+                public const double OptionalFieldProbability = 0.30;
             }
 
-            // type probabilities; must sum to 1.00
-            public const double Atom = 0.30;
-            public const double Struct = 0.30;
-            public const double Enum = 0.10;
-            public const double ContainerList = 0.15;
-            public const double ContainerArray = 0.15;
+            public const int MaxDepth = 2;
+            public const int MinFieldNumber = 0;
+            public const int MaxFieldNumber = 50;
         }
 
         public static class ContainerProbabilities
@@ -167,6 +158,18 @@ namespace TSLTestGenerator
                 }
             }
         }
+    }
+
+    public static class CommunicationInstanceSettings
+    {
+        public const int MinProtocolNumber = 1;
+        public const int MaxProtocolNumber = 10;
+    }
+
+    public static class EnumSettings
+    {
+        public const int MinEnumMemberNumber = 5;
+        public const int MaxEnumMemberNumber = 20;
     }
 
     public abstract class ReqRspProbabilitySpecifier
