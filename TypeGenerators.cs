@@ -40,7 +40,7 @@ namespace TSLTestGenerator
             new TSLGeneratorCombinator<ITSLType>(ContainerProbabilities.List.ElementStruct, GenerateStructType);
 
         public static readonly Func<TSLGeneratorContext, ITSLType> GenerateRandomTypeDelegate = GenerateNonNullType(TypeGenerator);
-        public static ITSLType GenerateRandomType(this TSLGeneratorContext context) => GenerateRandomTypeDelegate(context);
+        public static ITSLType GenerateRandomFieldType(this TSLGeneratorContext context) => GenerateRandomTypeDelegate(context);
 
         public static readonly Func<TSLGeneratorContext, ITSLType> GenerateListElementTypeDelegate = GenerateNonNullType(ListElementTypeGenerator);
         public static ITSLType GenerateListElementType(this TSLGeneratorContext context) => GenerateListElementTypeDelegate(context);
@@ -85,10 +85,10 @@ namespace TSLTestGenerator
 
         public static ITSLType GenerateStructType(this TSLGeneratorContext context)
         {
-            if (context.Structs.Count == 0)
+            if (context.StructsBeforeMaxDepth.Count == 0)
                 return null;
-            var selector = DiscreteUniform.Sample(context.MasterRandom, 0, context.Structs.Count - 1);
-            return context.Structs[selector];
+            var selector = DiscreteUniform.Sample(context.MasterRandom, 0, context.StructsBeforeMaxDepth.Count - 1);
+            return context.StructsBeforeMaxDepth[selector];
         }
         #endregion
     }
@@ -136,10 +136,10 @@ namespace TSLTestGenerator
 
         public static ITSLType GenerateFixedLengthStructType(this TSLGeneratorContext context)
         {
-            if (context.FixedLengthStructs.Count == 0)
+            if (context.FixedLengthStructsBeforeMaxDepth.Count == 0)
                 return null;
-            var selector = DiscreteUniform.Sample(context.MasterRandom, 0, context.FixedLengthStructs.Count - 1);
-            return context.FixedLengthStructs[selector];
+            var selector = DiscreteUniform.Sample(context.MasterRandom, 0, context.FixedLengthStructsBeforeMaxDepth.Count - 1);
+            return context.FixedLengthStructsBeforeMaxDepth[selector];
         }
         #endregion
     }

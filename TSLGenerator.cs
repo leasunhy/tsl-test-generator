@@ -58,7 +58,8 @@ namespace TSLTestGenerator
         public int GeneratedElementCount { get; set; } = 0;
 
         public List<TSLStruct> Structs { get; } = new List<TSLStruct>();
-        public List<TSLStruct> FixedLengthStructs { get; } = new List<TSLStruct>();
+        public List<TSLStruct> StructsBeforeMaxDepth { get; } = new List<TSLStruct>();
+        public List<TSLStruct> FixedLengthStructsBeforeMaxDepth { get; } = new List<TSLStruct>();
         public List<TSLCell> Cells { get; } = new List<TSLCell>();
         public List<TSLEnum> Enums { get; } = new List<TSLEnum>();
         public List<TSLProtocol> Protocols { get; } = new List<TSLProtocol>();

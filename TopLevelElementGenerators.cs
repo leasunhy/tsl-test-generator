@@ -32,8 +32,12 @@ namespace TSLTestGenerator
             var fields = context.RandomFields().Take(numberOfFields);
             var result = new TSLStruct(name, fields);
             context.Structs.Add(result);
-            if (!result.DynamicLengthed)
-                context.FixedLengthStructs.Add(result);
+            if (result.Depth < StructSettings.MaxDepth)
+            {
+                context.StructsBeforeMaxDepth.Add(result);
+                if (!result.DynamicLengthed)
+                    context.FixedLengthStructsBeforeMaxDepth.Add(result);
+            }
             return result;
         }
 
@@ -44,10 +48,7 @@ namespace TSLTestGenerator
             var fields = context.RandomFields().Take(numberOfFields);
             var result = new TSLCell(name, fields);
             context.Cells.Add(result);
-            //// also treat cells as structs
-            //context.Structs.Add(result);
-            //if (!result.DynamicLengthed)
-            //    context.FixedLengthStructs.Add(result);
+            // NOTE(leasunhy): not treating cells as structs here since they can't be used as field types
             return result;
         }
 
@@ -105,7 +106,7 @@ namespace TSLTestGenerator
                 var optional = ContinuousUniform.Sample(context.MasterRandom, 0.0, 1.0) <
                                StructSettings.FieldProbabilities.OptionalFieldProbability;
                 var name = $"field{context.GeneratedElementCount}";
-                var type = context.GenerateRandomType();
+                var type = context.GenerateRandomFieldType();
                 context.GeneratedElementCount += 1;
                 // TODO(leasunhy): generate attributes
                 var field = new TSLField(type, name, optional, attributes: null);

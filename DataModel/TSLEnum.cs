@@ -8,6 +8,7 @@ namespace TSLTestGenerator.DataModel
     {
         public string Name { get; }
         public bool DynamicLengthed => false;
+        public TSLFieldTypes FieldType => TSLFieldTypes.Enum;
         public ImmutableArray<string> Members { get; }
         // TODO(leasunhy): implement `starting value`
 

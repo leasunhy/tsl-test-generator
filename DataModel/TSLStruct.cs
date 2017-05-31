@@ -4,6 +4,8 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 
+using static TSLTestGenerator.DefaultSettings;
+
 namespace TSLTestGenerator.DataModel
 {
     public class TSLAttribute
@@ -69,7 +71,7 @@ namespace TSLTestGenerator.DataModel
                           .Where(t => t.FieldType == TSLFieldTypes.Struct)
                           .Cast<TSLStruct>()
                           .Aggregate(0, (max, s) => Math.Max(max, s.Depth)) + 1;
-            Debug.Assert(Depth <= DefaultSettings.StructSettings.MaxDepth);
+            Debug.Assert(Depth <= StructSettings.MaxDepth);
         }
 
         public override string ToString()

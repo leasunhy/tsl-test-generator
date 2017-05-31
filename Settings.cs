@@ -42,8 +42,8 @@ namespace TSLTestGenerator
 
                 // type probabilities; must sum to 1.00
                 public const double Atom = 0.40;
-                public const double Struct = 0.15;
-                public const double Enum = 0.05;
+                public const double Struct = 0.10;
+                public const double Enum = 0.10;
                 public const double ContainerList = 0.20;
                 public const double ContainerArray = 0.20;
 
