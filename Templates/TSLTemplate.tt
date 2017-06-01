@@ -1,0 +1,117 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="TSLTestGenerator.DataModel" #>
+// Generated with Random seed = <#= Script.RandomSeedForGeneration #>
+
+// Enums
+<# foreach (var e in Script.Enums) #>
+<# { #>
+enum <#= e.Name #>
+{
+<# foreach (var member in e.Members) #>
+<# { #>
+    <#= member #>,
+<# } #>
+}
+
+<# } #>
+
+// Structs
+<# foreach (var e in Script.Structs) #>
+<# { #>
+<#     if (e.Attributes != null && !e.Attributes.IsEmpty) #>
+<#     { #>
+[<#= string.Join(", ", e.Attributes) #>]
+<#     } #>
+struct <#= e.Name #>
+{
+<# foreach (var field in e.Fields) #>
+<# { #>
+    <# FormatField(field); #>
+<# } #>
+}
+
+<# } #>
+
+// Cells
+<# foreach (var e in Script.Cells) #>
+<# { #>
+<#     if (e.Attributes != null && !e.Attributes.IsEmpty) #>
+<#     { #>
+[<#= string.Join(", ", e.Attributes) #>]
+<#     } #>
+cell struct <#= e.Name #>
+{
+<# foreach (var field in e.Fields) #>
+<# { #>
+    <# FormatField(field); #>
+<# } #>
+}
+
+<# } #>
+
+// Protocols
+<# foreach (var e in Script.Protocols) #>
+<# { #>
+protocol <#= e.Name #>
+{
+    Type: {#= e.Type #};
+    Request: {#= e.RequestType.Name #};
+    Response: {#= e.Response.Name #};
+}
+
+<# } #>
+
+// Servers
+<# foreach (var e in Script.Servers) #>
+<# { #>
+server <#= e.Name #>
+{
+<# foreach (var p in e.Protocols) #>
+<# { #>
+    protocol <#= p.Name #>;
+<# } #>
+}
+
+<# } #>
+
+// Proxies
+<# foreach (var e in Script.Proxies) #>
+<# { #>
+proxy <#= e.Name #>
+{
+<# foreach (var p in e.Protocols) #>
+<# { #>
+    protocol <#= p.Name #>;
+<# } #>
+}
+
+<# } #>
+
+// Modules
+<# foreach (var e in Script.Modules) #>
+<# { #>
+module <#= e.Name #>
+{
+<# foreach (var p in e.Protocols) #>
+<# { #>
+    protocol <#= p.Name #>;
+<# } #>
+}
+
+<# } #>
+
+<#+  protected void FormatField(TSLField field)
+     {
+         if (field.Attributes != null && !field.Attributes.IsEmpty)
+         {
+#>
+[<#= string.Join(", ", field.Attributes) #>]
+<#+      }
+       if (field.Optional) {#>optional <#+ } #><#= field.Type.Name #> <#= field.Name #>;
+<#+
+    }
+#>

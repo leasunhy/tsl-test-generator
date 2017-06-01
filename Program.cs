@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CommandLine;
 using CommandLine.Text;
+using TSLTestGenerator.Templates;
 
 namespace TSLTestGenerator
 {
@@ -16,9 +17,8 @@ namespace TSLTestGenerator
             if (!CommandLine.Parser.Default.ParseArguments(args, options))
                 Environment.Exit(-1);
             var generatedScript = TSLGenerator.GetRandomTSLScript(options.Seed);
-            Console.WriteLine($"// generated with random seed = {generatedScript.RandomSeedForGeneration}");
-            Console.WriteLine();
-            Console.WriteLine(generatedScript); 
+            var template = new TSLTemplate(generatedScript);
+            Console.WriteLine(template.TransformText());
         }
     }
 

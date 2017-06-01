@@ -40,7 +40,7 @@ namespace TSLTestGenerator
 
             Debug.Assert(topLevelElementNumber == context.TopLevelElementCount);
             var topLevelElements = context.GetAllTopLevelElements().ToImmutableArray();
-            var script = new TSLScript(topLevelElements);
+            var script = new TSLScript(context);
             script.RandomSeedForGeneration = seed;
             return script;
         }
