@@ -58,9 +58,9 @@ cell struct <#= e.Name #>
 <# { #>
 protocol <#= e.Name #>
 {
-    Type: {#= e.Type #};
-    Request: {#= e.RequestType.Name #};
-    Response: {#= e.Response.Name #};
+    Type: <#= e.Type #>;
+    Request: <#= e.RequestType.Name #>;
+    Response: <#= e.ResponseType.Name #>;
 }
 
 <# } #>

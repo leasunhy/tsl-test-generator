@@ -268,8 +268,28 @@ namespace TSLTestGenerator.Templates
             
             #line default
             #line hidden
-            this.Write("\r\n{\r\n    Type: {#= e.Type #};\r\n    Request: {#= e.RequestType.Name #};\r\n    Respo" +
-                    "nse: {#= e.Response.Name #};\r\n}\r\n\r\n");
+            this.Write("\r\n{\r\n    Type: ");
+            
+            #line 61 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TSLTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(e.Type));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n    Request: ");
+            
+            #line 62 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TSLTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(e.RequestType.Name));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n    Response: ");
+            
+            #line 63 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TSLTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(e.ResponseType.Name));
+            
+            #line default
+            #line hidden
+            this.Write(";\r\n}\r\n\r\n");
             
             #line 66 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TSLTemplate.tt"
  } 
