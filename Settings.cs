@@ -69,10 +69,10 @@ namespace TSLTestGenerator
                 public const double ElementEnum = 0.10;
 
                 public const int MinDimension = 1;
-                public const int MaxDimension = 10;
+                public const int MaxDimension = 3;
 
                 public const int MinDimensionLength = 1;
-                public const int MaxDimensionLength = 100;
+                public const int MaxDimensionLength = 20;
             }
 
             public static class List
