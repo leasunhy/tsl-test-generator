@@ -50,16 +50,14 @@ namespace TSLTestGenerator
         public static ITSLType GenerateAtomType(this TSLGeneratorContext context)
         {
             // upper bound for DiscreteUniform.Sample() is inclusive
-            var selector = DiscreteUniform.Sample(context.MasterRandom, 0, AtomType.AtomTypes.Length - 1);
-            return AtomType.AtomTypes[selector];
+            return context.Enums.Choice(context.MasterRandom);
         }
 
         public static ITSLType GenerateEnumType(this TSLGeneratorContext context)
         {
             if (context.Enums.Count == 0)
                 return null;
-            var selector = DiscreteUniform.Sample(context.MasterRandom, 0, context.Enums.Count - 1);
-            return context.Enums[selector];
+            return context.Enums.Choice(context.MasterRandom);
         }
 
         public static ITSLType GenerateListType(this TSLGeneratorContext context)
@@ -87,8 +85,7 @@ namespace TSLTestGenerator
         {
             if (context.StructsBeforeMaxDepth.Count == 0)
                 return null;
-            var selector = DiscreteUniform.Sample(context.MasterRandom, 0, context.StructsBeforeMaxDepth.Count - 1);
-            return context.StructsBeforeMaxDepth[selector];
+            return context.StructsBeforeMaxDepth.Choice(context.MasterRandom);
         }
         #endregion
     }
@@ -124,8 +121,7 @@ namespace TSLTestGenerator
         public static ITSLType GenerateFixedLengthAtomType(this TSLGeneratorContext context)
         {
             // upper bound for DiscreteUniform.Sample() is inclusive
-            var selector = DiscreteUniform.Sample(context.MasterRandom, 0, AtomType.FixedLengthAtomTypes.Length - 1);
-            return AtomType.FixedLengthAtomTypes[selector];
+            return AtomType.FixedLengthAtomTypes.Choice(context.MasterRandom);
         }
 
         public static ITSLType GenerateFixedLengthEnumType(this TSLGeneratorContext context)
@@ -138,8 +134,7 @@ namespace TSLTestGenerator
         {
             if (context.FixedLengthStructsBeforeMaxDepth.Count == 0)
                 return null;
-            var selector = DiscreteUniform.Sample(context.MasterRandom, 0, context.FixedLengthStructsBeforeMaxDepth.Count - 1);
-            return context.FixedLengthStructsBeforeMaxDepth[selector];
+            return context.FixedLengthStructsBeforeMaxDepth.Choice(context.MasterRandom);
         }
         #endregion
     }
