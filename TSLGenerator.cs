@@ -42,6 +42,7 @@ namespace TSLTestGenerator
             var topLevelElements = context.GetAllTopLevelElements().ToImmutableArray();
             var script = new TSLScript(context);
             script.RandomSeedForGeneration = seed;
+            script.MasterRandom = masterRandom;
             return script;
         }
     }
