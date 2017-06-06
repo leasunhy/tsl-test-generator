@@ -4,6 +4,7 @@
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="TSLTestGenerator.DataModel" #>
+<#@ import namespace="TSLTestGenerator.Templates" #>
 <#@ include file="FieldTestCodeTemplate.tt" #>
 
 namespace GeneratedTest_<#= Script.RandomSeedForGeneration #>
@@ -99,8 +100,18 @@ namespace GeneratedTest_<#= Script.RandomSeedForGeneration #>
     {#>
             var writer_ = new <#= e.Name #>Writer();
 <#+
+        var assertActions = new List<Action>();
         foreach (var field in e.Fields)
-            GenerateTestCodeForField(Context, e, field, "writer_");
+        {
+            var assertAction = GenerateTestCodeForField(Context, e, field, "writer_");
+            assertActions.Add(assertAction);
+        }
+
+        // we assert the values of the fields again after they have been modified
+        foreach (var action in assertActions)
+        {
+            action?.Invoke();
+        }
     }
 #>
 
