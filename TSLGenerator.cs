@@ -18,14 +18,8 @@ namespace TSLTestGenerator
 {
     public class TSLGenerator
     {
-        private static readonly Random Random = new Random();
-
-        public static TSLScript GetRandomTSLScript(int? randomSeed = null)
+        public static TSLScript GetRandomTSLScript(int randomSeed, Random masterRandom)
         {
-            // initialize master random
-            int seed = randomSeed ?? Random.Next();
-            var masterRandom = new Random(seed);
-
             // generate the top level elements = Struct | Cell | Enum | Protocol | Server | Proxy | Module
             var context = new TSLGeneratorContext(masterRandom);
             var topLevelElementNumber = DiscreteUniform.Sample(masterRandom, GeneralSettings.MinTopLevelElementNumber, GeneralSettings.MaxTopLevelElementNumber);
@@ -41,8 +35,7 @@ namespace TSLTestGenerator
             Debug.Assert(topLevelElementNumber == context.TopLevelElementCount);
             var topLevelElements = context.GetAllTopLevelElements().ToImmutableArray();
             var script = new TSLScript(context);
-            script.RandomSeedForGeneration = seed;
-            script.MasterRandom = masterRandom;
+            script.RandomSeedForGeneration = randomSeed;
             return script;
         }
     }
@@ -82,5 +75,16 @@ namespace TSLTestGenerator
             return ret;
         };
         #endregion
+
+        public void AddStruct(TSLStruct struct_)
+        {
+            Structs.Add(struct_);
+            if (struct_.Depth < StructSettings.MaxDepth)
+            {
+                StructsBeforeMaxDepth.Add(struct_);
+                if (!struct_.DynamicLengthed)
+                    FixedLengthStructsBeforeMaxDepth.Add(struct_);
+            }
+        }
     }
 }

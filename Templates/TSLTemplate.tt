@@ -13,7 +13,7 @@ enum <#= e.Name #>
 {
 <# foreach (var member in e.Members) #>
 <# { #>
-    <#= member #>,
+    <#= member.Key #><# if (member.Value != null) { #> = <#= member.Value #><# } #>,
 <# } #>
 }
 
@@ -43,7 +43,7 @@ struct <#= e.Name #>
 <#     { #>
 [<#= string.Join(", ", e.Attributes) #>]
 <#     } #>
-cell struct <#= e.Name #>
+cell <#= e.Name #>
 {
 <# foreach (var field in e.Fields) #>
 <# { #>

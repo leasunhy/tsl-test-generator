@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Immutable;
+using System.Linq;
 using NUnit.Framework;
 
 namespace TSLTestGenerator.DataModel
@@ -19,6 +20,7 @@ namespace TSLTestGenerator.DataModel
         string Name { get; }
         bool DynamicLengthed { get; }
         TSLFieldTypes FieldType { get; }
+        string ClrTypeName { get; }
     }
 
     public class VoidType : ITSLType
@@ -26,6 +28,7 @@ namespace TSLTestGenerator.DataModel
         public string Name => "void";
         public bool DynamicLengthed { get { throw new NotSupportedException(); } }
         public TSLFieldTypes FieldType => TSLFieldTypes.NonField;
+        public string ClrTypeName => Name;
         public override string ToString() => Name;
 
         private VoidType() { }
@@ -37,6 +40,7 @@ namespace TSLTestGenerator.DataModel
         public string Name => "stream";
         public bool DynamicLengthed { get { throw new NotSupportedException(); } }
         public TSLFieldTypes FieldType => TSLFieldTypes.NonField;
+        public string ClrTypeName => Name;
         public override string ToString() => Name;
 
         private StreamType() { }
@@ -48,13 +52,21 @@ namespace TSLTestGenerator.DataModel
         public string Name { get; }
         public bool DynamicLengthed => false;
         public TSLFieldTypes FieldType => TSLFieldTypes.Array;
+        public string ClrTypeName { get; }
         public override string ToString() => Name;
+
+        public ITSLType ElementType { get; }
+        public ImmutableArray<int> Dimensions { get; }
 
         public ArrayType(ITSLType elementType, int[] dimensions)
         {
+            ElementType = elementType;
+            Dimensions = dimensions.ToImmutableArray();
+
             if (elementType.DynamicLengthed)
                 throw new ArgumentOutOfRangeException(nameof(elementType), "Element type can't be dynamic lengthed!");
             Name = $"{elementType.Name}[{string.Join(", ", dimensions)}]";
+            ClrTypeName = $"{elementType.Name}[{string.Join(",", dimensions.Select(d => ""))}]";
         }
     }
 
@@ -63,10 +75,14 @@ namespace TSLTestGenerator.DataModel
         public string Name { get; }
         public bool DynamicLengthed => true;
         public TSLFieldTypes FieldType => TSLFieldTypes.List;
+        public string ClrTypeName => Name;
         public override string ToString() => Name;
+
+        public ITSLType ElementType { get; }
 
         public ListType(ITSLType elementType)
         {
+            ElementType = elementType;
             Name = $"List<{elementType.Name}>";
         }
     }
@@ -76,6 +92,7 @@ namespace TSLTestGenerator.DataModel
         public string Name { get; }
         public bool DynamicLengthed { get; }
         public TSLFieldTypes FieldType => TSLFieldTypes.Atom;
+        public string ClrTypeName => Name;
         public override string ToString() => Name;
 
         public AtomType(string name, bool dynamicLengthed)

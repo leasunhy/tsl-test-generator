@@ -1,0 +1,72 @@
+﻿<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="TSLTestGenerator.DataModel" #>
+
+<#+
+private void GenerateTestCodeForField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
+{
+    switch (field.Type.FieldType)
+    {
+        case TSLFieldTypes.Enum:
+            GenerateTestCodeForEnumField(context, struct_, field, structVarName);
+            break;
+        case TSLFieldTypes.Array:
+            GenerateTestCodeForArrayField(context, struct_, field, structVarName);
+            break;
+        case TSLFieldTypes.Atom:
+            GenerateTestCodeForAtomField(context, struct_, field, structVarName);
+            break;
+        case TSLFieldTypes.List:
+            GenerateTestCodeForListField(context, struct_, field, structVarName);
+            break;
+        case TSLFieldTypes.Struct:
+            GenerateTestCodeForStructField(context, struct_, field, structVarName);
+            break;
+        default:
+            throw new NotImplementedException();
+    }
+}
+#>
+
+<#+
+private void GenerateTestCodeForEnumField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
+{
+    var fieldType = (TSLEnum)field.Type;
+    var randomMember = fieldType.Members.Choice(context.MasterRandom).Key;
+    var enumMember = $"{fieldType.Name}.{randomMember}";
+    var structMember = $"{structVarName}.{field.Name}";
+#>
+
+            <#= $"{structMember} = {enumMember};" #>
+            Assert.That(<#= structMember #>, Is.EqualTo(<#= enumMember #>));
+            Assert.That(<#= $"(({struct_.Name}){structVarName}).{field.Name}" #>, Is.EqualTo(<#= enumMember #>));
+            Assert.That(<#= $"((new {struct_.Name}Reader({structVarName}.CellPtr, 0)){structVarName}).{field.Name}" #>, Is.EqualTo(<#= enumMember #>));
+<#+
+}
+#>
+
+<#+
+private void GenerateTestCodeForArrayField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
+{
+}
+#>
+
+<#+
+private void GenerateTestCodeForAtomField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
+{
+}
+#>
+
+<#+
+private void GenerateTestCodeForListField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
+{
+}
+#>
+
+<#+
+private void GenerateTestCodeForStructField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
+{
+}
+#>

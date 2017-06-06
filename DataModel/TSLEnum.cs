@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -9,16 +10,28 @@ namespace TSLTestGenerator.DataModel
         public string Name { get; }
         public bool DynamicLengthed => false;
         public TSLFieldTypes FieldType => TSLFieldTypes.Enum;
-        public ImmutableArray<string> Members { get; }
+        public string ClrTypeName => Name;
+        public ImmutableDictionary<string, int?> Members { get; }
         // TODO(leasunhy): implement `starting value`
 
-        public TSLEnum(string name, IEnumerable<string> values = null)
+        public TSLEnum(string name, IEnumerable<string> members, IDictionary<string, int> values = null)
         {
+            if (members == null)
+                throw new ArgumentNullException(nameof(members));
             Name = name;
-            Members = (values ?? Enumerable.Range(0, 2).Select(i => $"{name}_{i}")).ToImmutableArray();
+            Members =
+                members
+                    .Select(m => new KeyValuePair<string, int?>(m, values?.GetValueOrNull(m)))
+                    .ToImmutableDictionary();
         }
 
-        public override string ToString() =>
-            $"enum {Name}\n{{\n  {string.Join(",\n  ", Members)}\n}}";
+        public override string ToString()
+        {
+            var members = Members.Select(pair => $"{pair.Key}{FormatValue(pair.Value)}");
+            return $"enum {Name}\n{{\n  {string.Join(",\n  ", members)}\n}}";
+        }
+
+        private static string FormatValue(int? value) =>
+            value == null ? "" : $" = {value}";
     }
 }

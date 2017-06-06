@@ -170,6 +170,8 @@ namespace TSLTestGenerator
     {
         public const int MinEnumMemberNumber = 5;
         public const int MaxEnumMemberNumber = 20;
+
+        public const double ValueSpecifiedProbability = 0.2;
     }
 
     public abstract class ReqRspProbabilitySpecifier

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using MathNet.Numerics.Distributions;
 using TSLTestGenerator.DataModel;
@@ -30,14 +31,9 @@ namespace TSLTestGenerator
             var name = $"Struct_{context.TopLevelElementCount + 1}";
             var numberOfFields = DiscreteUniform.Sample(context.MasterRandom, StructSettings.MinFieldNumber, StructSettings.MaxFieldNumber);
             var fields = context.RandomFields().Take(numberOfFields);
+            // TODO(leasunhy): generate attributes
             var result = new TSLStruct(name, fields);
-            context.Structs.Add(result);
-            if (result.Depth < StructSettings.MaxDepth)
-            {
-                context.StructsBeforeMaxDepth.Add(result);
-                if (!result.DynamicLengthed)
-                    context.FixedLengthStructsBeforeMaxDepth.Add(result);
-            }
+            context.AddStruct(result);
             return result;
         }
 
@@ -45,10 +41,9 @@ namespace TSLTestGenerator
         {
             var name = $"CellStruct_{context.TopLevelElementCount + 1}";
             var numberOfFields = DiscreteUniform.Sample(context.MasterRandom, StructSettings.MinFieldNumber, StructSettings.MaxFieldNumber);
-            var fields = context.RandomFields().Take(numberOfFields);
+            var fields = context.RandomFields().Take(numberOfFields).ToArray();
             var result = new TSLCell(name, fields);
             context.Cells.Add(result);
-            // NOTE(leasunhy): not treating cells as structs here since they can't be used as field types
             return result;
         }
 
@@ -91,8 +86,16 @@ namespace TSLTestGenerator
             var name = $"Enum{context.TopLevelElementCount + 1}";
             var memberNumber = DiscreteUniform.Sample(context.MasterRandom,
                 EnumSettings.MinEnumMemberNumber, EnumSettings.MaxEnumMemberNumber);
-            var members = Enumerable.Range(0, memberNumber).Select(i => $"{name}_{i}");
-            var result = new TSLEnum(name, members);
+            var members = Enumerable.Range(0, memberNumber).Select(i => $"{name}_{i}").ToList();
+            var values =
+                members
+                    .WithProbabilityThreshold(
+                        EnumSettings.ValueSpecifiedProbability,
+                        n => new KeyValuePair<string, int>(n, DiscreteUniform.Sample(context.MasterRandom, 0, byte.MaxValue)),
+                        _ => ContinuousUniform.Sample(context.MasterRandom, 0.0, 1.0))
+                    .Where(p => p.Key != null)
+                    .ToImmutableDictionary();
+            var result = new TSLEnum(name, members, values);
             context.Enums.Add(result);
             return result;
         }

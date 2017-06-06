@@ -72,7 +72,26 @@ namespace TSLTestGenerator.Templates
             this.Write("    ");
             
             #line 16 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TSLTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(member));
+            this.Write(this.ToStringHelper.ToStringWithCulture(member.Key));
+            
+            #line default
+            #line hidden
+            
+            #line 16 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TSLTemplate.tt"
+ if (member.Value != null) { 
+            
+            #line default
+            #line hidden
+            this.Write(" = ");
+            
+            #line 16 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TSLTemplate.tt"
+            this.Write(this.ToStringHelper.ToStringWithCulture(member.Value));
+            
+            #line default
+            #line hidden
+            
+            #line 16 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TSLTemplate.tt"
+ } 
             
             #line default
             #line hidden
@@ -208,7 +227,7 @@ namespace TSLTestGenerator.Templates
             
             #line default
             #line hidden
-            this.Write("cell struct ");
+            this.Write("cell ");
             
             #line 46 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TSLTemplate.tt"
             this.Write(this.ToStringHelper.ToStringWithCulture(e.Name));

@@ -16,9 +16,19 @@ namespace TSLTestGenerator
             var options = new CommandLineOptions();
             if (!CommandLine.Parser.Default.ParseArguments(args, options))
                 Environment.Exit(-1);
-            var generatedScript = TSLGenerator.GetRandomTSLScript(options.Seed);
-            var template = new TSLTemplate(generatedScript);
-            Console.WriteLine(template.TransformText());
+            int randomSeed = options.Seed ?? new Random().Next();
+            var masterRandom = new Random(randomSeed);
+            var generatedScript = TSLGenerator.GetRandomTSLScript(randomSeed, masterRandom);
+
+            var tslTemplate = new TSLTemplate(generatedScript);
+            Console.WriteLine(tslTemplate.TransformText());
+
+            Console.WriteLine("                        ");
+            Console.WriteLine("------------------------");
+            Console.WriteLine("                        ");
+
+            var testCodeTemplate = new TestCodeTemplate(generatedScript, masterRandom);
+            Console.WriteLine(testCodeTemplate.TransformText());
         }
     }
 

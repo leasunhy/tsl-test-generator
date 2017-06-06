@@ -3,3 +3,117 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="TSLTestGenerator.DataModel" #>
+<#@ include file="FieldTestCodeTemplate.tt" #>
+
+namespace GeneratedTest_<#= Script.RandomSeedForGeneration #>
+{
+    public class Test_<#= Script.RandomSeedForGeneration #>
+    {
+<#
+        foreach (var e in Script.Enums)
+            GenerateTestCodeForEnum(e);
+        foreach (var e in Script.Protocols)
+            GenerateTestCodeForProtocol(e);
+        foreach (var e in Script.Servers)
+            GenerateTestCodeForServer(e);
+        foreach (var e in Script.Proxies)
+            GenerateTestCodeForProxy(e);
+        foreach (var e in Script.Modules)
+            GenerateTestCodeForModule(e);
+        foreach (var e in Script.Structs)
+            GenerateTestCodeForStruct(e);
+        foreach (var e in Script.Cells)
+            GenerateTestCodeForCell(e);
+#>
+    }
+}
+
+<#+
+    protected void GenerateTestCodeForEnum(TSLEnum e)
+    {
+    }
+#>
+
+<#+
+    protected void GenerateTestCodeForStruct(TSLStruct e)
+    {#>
+
+        [Test]
+        public void TestStruct_<#= e.Name #>
+        {
+<#+
+        GenerateTestCodeForStructFieldTypes(e);
+        // check if the struct is used by some protocol
+        // if there are no reader/writer definitions for the struct,
+        // we simply test the type of the fields
+        if (StructsUsedInProtocols.Contains(e))
+            GenerateTestCodeForStructThatHasWriter(e);
+#>
+        }
+<#+ }
+#>
+
+<#+
+    protected void GenerateTestCodeForStructFieldTypes(TSLStruct e)
+    {
+        var varName = $"fieldTypeTest_{e.Name}";
+#>
+            var <#= varName #> = new <#= e.Name #>();
+<#+
+        foreach (var field in e.Fields)
+        {
+#>
+            Assert.That(typeof(<#= varName #>.<#= field.Name #>), Is.TypeOf<<#= field.Type.ClrTypeName #>>());
+<#+
+        }
+    }
+#>
+
+<#+
+    protected void GenerateTestCodeForStructThatHasWriter(TSLStruct e)
+    {#>
+            var writer_ = new <#= e.Name #>Writer();
+<#+
+        foreach (var field in e.Fields)
+            GenerateTestCodeForField(Context, e, field, "writer_");
+    }
+#>
+
+<#+
+    protected void GenerateTestCodeForCell(TSLCell e)
+    {#>
+
+        [Test]
+        public void TestCell_<#= e.Name #>
+        {
+<#+
+        // TODO(leasunhy): cell-specific tests
+#>
+        }
+<#+ }
+#>
+
+<#+
+    protected void GenerateTestCodeForProtocol(TSLProtocol e)
+    {
+    }
+#>
+
+<#+
+    protected void GenerateTestCodeForServer(TSLServer e)
+    {
+    }
+#>
+
+<#+
+    protected void GenerateTestCodeForProxy(TSLProxy e)
+    {
+    }
+#>
+
+<#+
+    protected void GenerateTestCodeForModule(TSLModule e)
+    {
+    }
+#>

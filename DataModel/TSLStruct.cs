@@ -57,6 +57,7 @@ namespace TSLTestGenerator.DataModel
         public string Name { get; }
         public bool DynamicLengthed { get; }
         public TSLFieldTypes FieldType => TSLFieldTypes.Struct;
+        public string ClrTypeName => Name;
         public ImmutableArray<TSLAttribute> Attributes { get; }
         public ImmutableArray<TSLField> Fields { get; }
         public int Depth { get; }
@@ -82,18 +83,24 @@ namespace TSLTestGenerator.DataModel
         }
     }
 
-    public class TSLCell : TSLStruct, ITSLTopLevelElement
+    public class TSLCell : ITSLTopLevelElement
     {
+        public string Name { get; }
+        public ImmutableArray<TSLAttribute> Attributes { get; }
+        public ImmutableArray<TSLField> Fields { get; }
+
         public TSLCell(string name, IEnumerable<TSLField> fields, IEnumerable<TSLAttribute> attributes = null)
-            : base(name, fields, attributes)
         {
+            Name = name;
+            Fields = fields.ToImmutableArray();
+            Attributes = (attributes?.ToImmutableArray()).GetValueOrDefault();
         }
 
         public override string ToString()
         {
             string attributes = Attributes == null || Attributes.IsEmpty ? "" : $"[{string.Join(", ", Attributes)}]\n";
             string fields = string.Join("\n", Fields);
-            return $"{attributes}cell struct {Name}\n{{\n{fields}\n}}";
+            return $"{attributes}cell {Name}\n{{\n{fields}\n}}";
         }
     }
 }

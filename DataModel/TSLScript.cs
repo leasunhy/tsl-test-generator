@@ -8,7 +8,6 @@ namespace TSLTestGenerator.DataModel
     public class TSLScript
     {
         public int RandomSeedForGeneration { get; set; }
-        public Random MasterRandom { get; set; }
 
         public TSLScript(IEnumerable<ITSLTopLevelElement> topLevelElements)
         {

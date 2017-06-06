@@ -66,6 +66,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ProtocolGenerators.cs" />
     <Compile Include="Settings.cs" />
+    <None Include="Templates\FieldTestCodeTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FieldTestCodeTemplate.tt</DependentUpon>
+    </None>
     <Compile Include="Templates\TestCodeTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -82,6 +87,7 @@
     <Compile Include="TSLGenerator.cs" />
     <Compile Include="TSLGeneratorCombinator.cs" />
     <Compile Include="TypeGenerators.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -91,6 +97,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Templates\FieldTestCodeTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>FieldTestCodeTemplate.cs</LastGenOutput>
+    </Content>
     <Content Include="Templates\TestCodeTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TestCodeTemplate.cs</LastGenOutput>
