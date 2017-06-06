@@ -31,8 +31,32 @@ namespace GeneratedTest_<#= Script.RandomSeedForGeneration #>
 
 <#+
     protected void GenerateTestCodeForEnum(TSLEnum e)
-    {
-    }
+    {#>
+
+        [Test]
+        public void TestEnum_<#= e.Name #>
+        {
+<#+
+        int defaultValue = 0;
+        foreach (var member in e.Members)
+        {
+            if (member.Value == null)
+            {
+#>
+            Assert.That((int)<#= e.Name #>.<#= member.Key #>, Is.EqualTo(<#= defaultValue++ #>));
+<#+
+            }
+            else
+            {
+#>
+            Assert.That((int)<#= e.Name #>.<#= member.Key #>, Is.EqualTo(<#= member.Value #>));
+<#+
+                defaultValue = member.Value.Value + 1;
+            }
+        }
+#>
+        }
+<#+ }
 #>
 
 <#+

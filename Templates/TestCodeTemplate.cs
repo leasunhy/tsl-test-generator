@@ -74,13 +74,176 @@ namespace TSLTestGenerator.Templates
 
     protected void GenerateTestCodeForEnum(TSLEnum e)
     {
-    }
+        
+        #line default
+        #line hidden
+        
+        #line 34 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write("\r\n        [Test]\r\n        public void TestEnum_");
 
         
         #line default
         #line hidden
         
-        #line 38 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 37 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write(this.ToStringHelper.ToStringWithCulture(e.Name));
+
+        
+        #line default
+        #line hidden
+        
+        #line 37 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write("\r\n        {\r\n");
+
+        
+        #line default
+        #line hidden
+        
+        #line 39 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+
+        int defaultValue = 0;
+        foreach (var member in e.Members)
+        {
+            if (member.Value == null)
+            {
+
+        
+        #line default
+        #line hidden
+        
+        #line 45 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write("            Assert.That((int)");
+
+        
+        #line default
+        #line hidden
+        
+        #line 46 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write(this.ToStringHelper.ToStringWithCulture(e.Name));
+
+        
+        #line default
+        #line hidden
+        
+        #line 46 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write(".");
+
+        
+        #line default
+        #line hidden
+        
+        #line 46 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write(this.ToStringHelper.ToStringWithCulture(member.Key));
+
+        
+        #line default
+        #line hidden
+        
+        #line 46 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write(", Is.EqualTo(");
+
+        
+        #line default
+        #line hidden
+        
+        #line 46 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write(this.ToStringHelper.ToStringWithCulture(defaultValue++));
+
+        
+        #line default
+        #line hidden
+        
+        #line 46 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write("));\r\n");
+
+        
+        #line default
+        #line hidden
+        
+        #line 47 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+
+            }
+            else
+            {
+
+        
+        #line default
+        #line hidden
+        
+        #line 51 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write("            Assert.That((int)");
+
+        
+        #line default
+        #line hidden
+        
+        #line 52 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write(this.ToStringHelper.ToStringWithCulture(e.Name));
+
+        
+        #line default
+        #line hidden
+        
+        #line 52 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write(".");
+
+        
+        #line default
+        #line hidden
+        
+        #line 52 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write(this.ToStringHelper.ToStringWithCulture(member.Key));
+
+        
+        #line default
+        #line hidden
+        
+        #line 52 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write(", Is.EqualTo(");
+
+        
+        #line default
+        #line hidden
+        
+        #line 52 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write(this.ToStringHelper.ToStringWithCulture(member.Value));
+
+        
+        #line default
+        #line hidden
+        
+        #line 52 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write("));\r\n");
+
+        
+        #line default
+        #line hidden
+        
+        #line 53 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+
+                defaultValue = member.Value.Value + 1;
+            }
+        }
+
+        
+        #line default
+        #line hidden
+        
+        #line 57 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+this.Write("        }\r\n");
+
+        
+        #line default
+        #line hidden
+        
+        #line 59 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+ }
+
+        
+        #line default
+        #line hidden
+        
+        #line 62 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 
     protected void GenerateTestCodeForStruct(TSLStruct e)
     {
@@ -88,28 +251,28 @@ namespace TSLTestGenerator.Templates
         #line default
         #line hidden
         
-        #line 40 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 64 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write("\r\n        [Test]\r\n        public void TestStruct_");
 
         
         #line default
         #line hidden
         
-        #line 43 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 67 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(e.Name));
 
         
         #line default
         #line hidden
         
-        #line 43 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 67 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write("\r\n        {\r\n");
 
         
         #line default
         #line hidden
         
-        #line 45 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 69 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 
         GenerateTestCodeForStructFieldTypes(e);
         // check if the struct is used by some protocol
@@ -122,21 +285,21 @@ this.Write("\r\n        {\r\n");
         #line default
         #line hidden
         
-        #line 52 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 76 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write("        }\r\n");
 
         
         #line default
         #line hidden
         
-        #line 54 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 78 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
  }
 
         
         #line default
         #line hidden
         
-        #line 57 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 81 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 
     protected void GenerateTestCodeForStructFieldTypes(TSLStruct e)
     {
@@ -146,42 +309,42 @@ this.Write("        }\r\n");
         #line default
         #line hidden
         
-        #line 61 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 85 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write("            var ");
 
         
         #line default
         #line hidden
         
-        #line 62 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 86 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(varName));
 
         
         #line default
         #line hidden
         
-        #line 62 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 86 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write(" = new ");
 
         
         #line default
         #line hidden
         
-        #line 62 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 86 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(e.Name));
 
         
         #line default
         #line hidden
         
-        #line 62 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 86 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write("();\r\n");
 
         
         #line default
         #line hidden
         
-        #line 63 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 87 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 
         foreach (var field in e.Fields)
         {
@@ -190,56 +353,56 @@ this.Write("();\r\n");
         #line default
         #line hidden
         
-        #line 66 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 90 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write("            Assert.That(typeof(");
 
         
         #line default
         #line hidden
         
-        #line 67 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 91 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(varName));
 
         
         #line default
         #line hidden
         
-        #line 67 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 91 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write(".");
 
         
         #line default
         #line hidden
         
-        #line 67 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 91 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(field.Name));
 
         
         #line default
         #line hidden
         
-        #line 67 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 91 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write("), Is.TypeOf<");
 
         
         #line default
         #line hidden
         
-        #line 67 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 91 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(field.Type.ClrTypeName));
 
         
         #line default
         #line hidden
         
-        #line 67 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 91 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write(">());\r\n");
 
         
         #line default
         #line hidden
         
-        #line 68 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 92 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 
         }
     }
@@ -248,7 +411,7 @@ this.Write(">());\r\n");
         #line default
         #line hidden
         
-        #line 73 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 97 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 
     protected void GenerateTestCodeForStructThatHasWriter(TSLStruct e)
     {
@@ -256,28 +419,28 @@ this.Write(">());\r\n");
         #line default
         #line hidden
         
-        #line 75 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 99 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write("            var writer_ = new ");
 
         
         #line default
         #line hidden
         
-        #line 76 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 100 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(e.Name));
 
         
         #line default
         #line hidden
         
-        #line 76 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 100 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write("Writer();\r\n");
 
         
         #line default
         #line hidden
         
-        #line 77 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 101 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 
         foreach (var field in e.Fields)
             GenerateTestCodeForField(Context, e, field, "writer_");
@@ -287,7 +450,7 @@ this.Write("Writer();\r\n");
         #line default
         #line hidden
         
-        #line 83 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 107 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 
     protected void GenerateTestCodeForCell(TSLCell e)
     {
@@ -295,28 +458,28 @@ this.Write("Writer();\r\n");
         #line default
         #line hidden
         
-        #line 85 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 109 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write("\r\n        [Test]\r\n        public void TestCell_");
 
         
         #line default
         #line hidden
         
-        #line 88 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 112 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(e.Name));
 
         
         #line default
         #line hidden
         
-        #line 88 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 112 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write("\r\n        {\r\n");
 
         
         #line default
         #line hidden
         
-        #line 90 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 114 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 
         // TODO(leasunhy): cell-specific tests
 
@@ -324,21 +487,21 @@ this.Write("\r\n        {\r\n");
         #line default
         #line hidden
         
-        #line 92 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 116 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 this.Write("        }\r\n");
 
         
         #line default
         #line hidden
         
-        #line 94 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 118 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
  }
 
         
         #line default
         #line hidden
         
-        #line 97 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 121 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 
     protected void GenerateTestCodeForProtocol(TSLProtocol e)
     {
@@ -348,7 +511,7 @@ this.Write("        }\r\n");
         #line default
         #line hidden
         
-        #line 103 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 127 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 
     protected void GenerateTestCodeForServer(TSLServer e)
     {
@@ -358,7 +521,7 @@ this.Write("        }\r\n");
         #line default
         #line hidden
         
-        #line 109 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 133 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 
     protected void GenerateTestCodeForProxy(TSLProxy e)
     {
@@ -368,7 +531,7 @@ this.Write("        }\r\n");
         #line default
         #line hidden
         
-        #line 115 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
+        #line 139 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TestCodeTemplate.tt"
 
     protected void GenerateTestCodeForModule(TSLModule e)
     {
