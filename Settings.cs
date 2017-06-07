@@ -89,6 +89,7 @@ namespace TSLTestGenerator
 
                 //public const int MinDepth = 1;
                 //public const int MaxDepth = 10;
+                public const int MaxRandomElementCount = 10;
             }
         }
 
@@ -172,6 +173,15 @@ namespace TSLTestGenerator
         public const int MaxEnumMemberNumber = 20;
 
         public const double ValueSpecifiedProbability = 0.2;
+    }
+
+    public static class RandomValueSettings
+    {
+        public const int MaxStringLength = 1000;
+        public const string StringAlphabet =
+            " 1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+            "\r\n\t-_=+\'\"\\<[{(?)}]>/|!@#$%^&*" + 
+            "天地人日月的地得可怜九月初三夜疑是银河落九天はじめまして";
     }
 
     public abstract class ReqRspProbabilitySpecifier

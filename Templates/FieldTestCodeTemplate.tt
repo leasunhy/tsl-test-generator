@@ -2,6 +2,7 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.Security.Permissions" #>
 <#@ import namespace="TSLTestGenerator.DataModel" #>
 <#@ import namespace="TSLTestGenerator.Templates" #>
 
@@ -53,8 +54,6 @@ private Action GenerateTestCodeForEnumField(TestCodeGeneratorContext context, TS
             Assert.That(<#= $"((new {struct_.Name}Reader({structVarName}.CellPtr, 0)){structVarName}).{field.Name}" #>, Is.EqualTo(<#= enumMember #>));
 <#+
     };
-#>
-<#+
 }
 #>
 

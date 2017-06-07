@@ -12,6 +12,7 @@ namespace TSLTestGenerator.Templates
     using System.Linq;
     using System.Text;
     using System.Collections.Generic;
+    using System.Security.Permissions;
     using TSLTestGenerator.DataModel;
     using TSLTestGenerator.Templates;
     using System;
@@ -34,7 +35,7 @@ namespace TSLTestGenerator.Templates
             return this.GenerationEnvironment.ToString();
         }
         
-        #line 8 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 9 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 
 // this method returns an action to generate assert statements for later use
 private Action GenerateTestCodeForField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
@@ -68,7 +69,7 @@ private Action GenerateTestCodeForField(TestCodeGeneratorContext context, TSLStr
         #line default
         #line hidden
         
-        #line 38 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 39 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 
 private Action GenerateTestCodeForEnumField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
 {
@@ -81,28 +82,28 @@ private Action GenerateTestCodeForEnumField(TestCodeGeneratorContext context, TS
         #line default
         #line hidden
         
-        #line 45 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 46 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 this.Write("\r\n            ");
 
         
         #line default
         #line hidden
         
-        #line 47 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 48 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture($"{structMember} = {enumMember};"));
 
         
         #line default
         #line hidden
         
-        #line 47 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 48 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 this.Write("\r\n");
 
         
         #line default
         #line hidden
         
-        #line 48 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 49 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
  return () =>
     {
 
@@ -110,114 +111,107 @@ this.Write("\r\n");
         #line default
         #line hidden
         
-        #line 50 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 51 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 this.Write("            Assert.That(");
 
         
         #line default
         #line hidden
         
-        #line 51 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 52 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(structMember));
 
         
         #line default
         #line hidden
         
-        #line 51 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 52 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 this.Write(", Is.EqualTo(");
 
         
         #line default
         #line hidden
         
-        #line 51 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 52 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(enumMember));
 
         
         #line default
         #line hidden
         
-        #line 51 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 52 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 this.Write("));\r\n            Assert.That(");
 
         
         #line default
         #line hidden
         
-        #line 52 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 53 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture($"(({struct_.Name}){structVarName}).{field.Name}"));
 
         
         #line default
         #line hidden
         
-        #line 52 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 53 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 this.Write(", Is.EqualTo(");
 
         
         #line default
         #line hidden
         
-        #line 52 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 53 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(enumMember));
 
         
         #line default
         #line hidden
         
-        #line 52 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 53 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 this.Write("));\r\n            Assert.That(");
 
         
         #line default
         #line hidden
         
-        #line 53 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 54 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture($"((new {struct_.Name}Reader({structVarName}.CellPtr, 0)){structVarName}).{field.Name}"));
 
         
         #line default
         #line hidden
         
-        #line 53 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 54 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 this.Write(", Is.EqualTo(");
 
         
         #line default
         #line hidden
         
-        #line 53 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 54 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 this.Write(this.ToStringHelper.ToStringWithCulture(enumMember));
 
         
         #line default
         #line hidden
         
-        #line 53 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 54 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 this.Write("));\r\n");
 
         
         #line default
         #line hidden
         
-        #line 54 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 55 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 
     };
-
-        
-        #line default
-        #line hidden
-        
-        #line 57 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
-
 }
 
         
         #line default
         #line hidden
         
-        #line 61 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 60 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 
 private Action GenerateTestCodeForArrayField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
 {
@@ -226,7 +220,7 @@ private Action GenerateTestCodeForArrayField(TestCodeGeneratorContext context, T
         #line default
         #line hidden
         
-        #line 66 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 65 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 
     return () => {};
 }
@@ -235,7 +229,7 @@ private Action GenerateTestCodeForArrayField(TestCodeGeneratorContext context, T
         #line default
         #line hidden
         
-        #line 71 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 70 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 
 private Action GenerateTestCodeForAtomField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
 {
@@ -246,7 +240,7 @@ private Action GenerateTestCodeForAtomField(TestCodeGeneratorContext context, TS
         #line default
         #line hidden
         
-        #line 78 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 77 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 
 private Action GenerateTestCodeForListField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
 {
@@ -257,7 +251,7 @@ private Action GenerateTestCodeForListField(TestCodeGeneratorContext context, TS
         #line default
         #line hidden
         
-        #line 85 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
+        #line 84 "C:\Users\v-siyul.FAREAST\Documents\Visual Studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\FieldTestCodeTemplate.tt"
 
 private Action GenerateTestCodeForStructField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
 {
