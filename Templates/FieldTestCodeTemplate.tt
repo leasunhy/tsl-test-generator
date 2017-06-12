@@ -8,25 +8,25 @@
 
 <#+
 // this method returns an action to generate assert statements for later use
-private Action GenerateTestCodeForField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
+private Action GenerateTestCodeForField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string writerVarName)
 {
     Action assertAction;
     switch (field.Type.FieldType)
     {
         case TSLFieldTypes.Enum:
-            assertAction = GenerateTestCodeForEnumField(context, struct_, field, structVarName);
+            assertAction = GenerateTestCodeForEnumField(context, struct_, field, writerVarName);
             break;
         case TSLFieldTypes.Array:
-            assertAction = GenerateTestCodeForArrayField(context, struct_, field, structVarName);
+            assertAction = GenerateTestCodeForArrayField(context, struct_, field, writerVarName);
             break;
         case TSLFieldTypes.Atom:
-            assertAction = GenerateTestCodeForAtomField(context, struct_, field, structVarName);
+            assertAction = GenerateTestCodeForAtomField(context, struct_, field, writerVarName);
             break;
         case TSLFieldTypes.List:
-            assertAction = GenerateTestCodeForListField(context, struct_, field, structVarName);
+            assertAction = GenerateTestCodeForListField(context, struct_, field, writerVarName);
             break;
         case TSLFieldTypes.Struct:
-            assertAction = GenerateTestCodeForStructField(context, struct_, field, structVarName);
+            assertAction = GenerateTestCodeForStructField(context, struct_, field, writerVarName);
             break;
         default:
             throw new NotImplementedException();
@@ -37,12 +37,12 @@ private Action GenerateTestCodeForField(TestCodeGeneratorContext context, TSLStr
 #>
 
 <#+
-private Action GenerateTestCodeForEnumField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
+private Action GenerateTestCodeForEnumField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string writerVarName)
 {
     var fieldType = (TSLEnum)field.Type;
-    var randomMember = fieldType.Members.Choice(context.MasterRandom).Key;
-    var enumMember = $"{fieldType.Name}.{randomMember}";
-    var structMember = $"{structVarName}.{field.Name}";
+    var randomMember = fieldType.Members.Choice(context.MasterRandom);
+    var enumMember = $"{fieldType.Name}.{randomMember.Key}";
+    var structMember = $"{writerVarName}.{field.Name}";
 #>
 
             <#= $"{structMember} = {enumMember};" #>
@@ -50,40 +50,105 @@ private Action GenerateTestCodeForEnumField(TestCodeGeneratorContext context, TS
     {
 #>
             Assert.That(<#= structMember #>, Is.EqualTo(<#= enumMember #>));
-            Assert.That(<#= $"(({struct_.Name}){structVarName}).{field.Name}" #>, Is.EqualTo(<#= enumMember #>));
-            Assert.That(<#= $"((new {struct_.Name}Reader({structVarName}.CellPtr, 0)){structVarName}).{field.Name}" #>, Is.EqualTo(<#= enumMember #>));
+            Assert.That(<#= $"(({struct_.Name}){writerVarName}).{field.Name}" #>, Is.EqualTo(<#= enumMember #>));
+            Assert.That(<#= $"((new {struct_.Name}Reader({writerVarName}.CellPtr, 0)){writerVarName}).{field.Name}" #>, Is.EqualTo(<#= enumMember #>));
+
+            Assert.That((int)<#= structMember #>, Is.EqualTo(<#= randomMember.Value #>));
+            Assert.That((int)<#= $"(({struct_.Name}){writerVarName}).{field.Name}" #>, Is.EqualTo(<#= randomMember.Value #>));
+            Assert.That((int)<#= $"((new {struct_.Name}Reader({writerVarName}.CellPtr, 0)){writerVarName}).{field.Name}" #>, Is.EqualTo(<#= randomMember.Value #>));
 <#+
     };
 }
 #>
 
 <#+
-private Action GenerateTestCodeForArrayField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
+private Action GenerateTestCodeForArrayField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string writerVarName)
 {
+    var fieldType = (ArrayType)field.Type;
+    var randomArray = fieldType.GetRandomValue(context.MasterRandom);
+    var parentMember = $"{writerVarName}.{field.Name}";
+    var tempVarName = $"structFieldTestValue{++context.GeneratedCount}";
 #>
-
+        var <#= tempVarName #> = <#= randomArray #>;
+        <#= parentMember #> = <#= tempVarName #>;
 <#+
-    return () => {};
+    return () =>
+    {
+#>
+        Assert.That(<#= parentMember #>, Is.EqualTo(<#= tempVarName #>));
+        Assert.That(<#= $"(({struct_.Name}){writerVarName}).{field.Name}" #>, Is.EqualTo(<#= tempVarName #>));
+        Assert.That(<#= $"((new {struct_.Name}Reader({writerVarName}.CellPtr, 0)){writerVarName}).{field.Name}" #>, Is.EqualTo(<#= tempVarName #>));
+<#+
+    };
 }
 #>
 
 <#+
-private Action GenerateTestCodeForAtomField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
+private Action GenerateTestCodeForAtomField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string writerVarName)
 {
-    return () => {};
+    var fieldType = (AtomType)field.Type;
+    var randomValue = fieldType.GetRandomValue(context.MasterRandom);
+    var parentMember = $"{writerVarName}.{field.Name}";
+    var tempVarName = $"structFieldTestValue{++context.GeneratedCount}";
+#>
+        var <#= tempVarName #> = <#= randomValue #>;
+        <#= parentMember #> = <#= tempVarName #>;
+<#+
+    return () =>
+    {
+#>
+        Assert.That(<#= parentMember #>, Is.EqualTo(<#= tempVarName #>));
+        Assert.That(<#= $"(({struct_.Name}){writerVarName}).{field.Name}" #>, Is.EqualTo(<#= tempVarName #>));
+        Assert.That(<#= $"((new {struct_.Name}Reader({writerVarName}.CellPtr, 0)){writerVarName}).{field.Name}" #>, Is.EqualTo(<#= tempVarName #>));
+<#+
+    };
 }
 #>
 
 <#+
-private Action GenerateTestCodeForListField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
+private Action GenerateTestCodeForListField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string writerVarName)
 {
-    return () => {};
+    var fieldType = (ListType)field.Type;
+    var randomValue = fieldType.GetRandomValue(context.MasterRandom);
+    var parentMember = $"{writerVarName}.{field.Name}";
+    var tempVarName = $"structFieldTestValue{++context.GeneratedCount}";
+#>
+        var <#= tempVarName #> = <#= randomValue #>;
+        <#= parentMember #> = <#= tempVarName #>;
+<#+
+    return () =>
+    {
+#>
+        Assert.That(<#= parentMember #>, Is.EqualTo(<#= tempVarName #>));
+        Assert.That(<#= $"(({struct_.Name}){writerVarName}).{field.Name}" #>, Is.EqualTo(<#= tempVarName #>));
+        Assert.That(<#= $"((new {struct_.Name}Reader({writerVarName}.CellPtr, 0)){writerVarName}).{field.Name}" #>, Is.EqualTo(<#= tempVarName #>));
+<#+
+    };
 }
 #>
 
 <#+
-private Action GenerateTestCodeForStructField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string structVarName)
+private Action GenerateTestCodeForStructField(TestCodeGeneratorContext context, TSLStruct struct_, TSLField field, string writerVarName)
 {
+    //var fieldType = (TSLStruct)field.Type;
+    //var randomStruct = fieldType.GetRandomValue(context.MasterRandom);
+    //var parentMember = $"{writerVarName}.{field.Name}";
+    //var tempVarName = $"structFieldTestValue{++context.GeneratedCount}";
+    //var structVarName = $"structFieldTestStruct{++context.GeneratedCount}";
+    //var readerVarName = $"structFieldTestReader{++context.GeneratedCount}";
+#>
+
+        //<#= fieldType.Name #> <#= tempVarName #> = <#= randomStruct #>;
+        //<#= parentMember #> = <#= tempVarName #>;
+<#+
+    //Action writerAndStructComp = GenerateStructComparisonCode(struct_, writerVarName, tempVarName);
+    //Action readerAndStructComp = GenerateStructComparisonCode(struct_, readerVarName, tempVarName);
+    //return () =>
+    //{
+    //    // TODO(leasunhy): add test code
+#>
+<#+
+    //};
     return () => {};
 }
 #>

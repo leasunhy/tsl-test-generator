@@ -11,7 +11,7 @@ namespace TSLTestGenerator.DataModel
         public bool DynamicLengthed => false;
         public TSLFieldTypes FieldType => TSLFieldTypes.Enum;
         public string ClrTypeName => Name;
-        public Func<Random, string> RandomValueProvider { get; }
+        public Func<Random, string> GetRandomValue { get; }
         public ImmutableDictionary<string, int?> Members { get; }
         // TODO(leasunhy): implement `starting value`
 
@@ -24,7 +24,7 @@ namespace TSLTestGenerator.DataModel
                 members
                     .Select(m => new KeyValuePair<string, int?>(m, values?.GetValueOrNull(m)))
                     .ToImmutableDictionary();
-            RandomValueProvider = random => Members.Choice(random).Key;
+            GetRandomValue = random => Members.Choice(random).Key;
         }
 
         public override string ToString()

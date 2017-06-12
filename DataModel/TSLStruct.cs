@@ -57,7 +57,7 @@ namespace TSLTestGenerator.DataModel
         public string Name { get; }
         public bool DynamicLengthed { get; }
         public TSLFieldTypes FieldType => TSLFieldTypes.Struct;
-        public Func<Random, string> RandomValueProvider { get; }
+        public Func<Random, string> GetRandomValue { get; }
         public string ClrTypeName => Name;
         public ImmutableArray<TSLAttribute> Attributes { get; }
         public ImmutableArray<TSLField> Fields { get; }
@@ -73,14 +73,14 @@ namespace TSLTestGenerator.DataModel
                           .Where(t => t.FieldType == TSLFieldTypes.Struct)
                           .Cast<TSLStruct>()
                           .Aggregate(0, (max, s) => Math.Max(max, s.Depth)) + 1;
-            RandomValueProvider = RandomStruct;
+            GetRandomValue = RandomStruct;
             Debug.Assert(Depth <= StructSettings.MaxDepth);
         }
 
         private string RandomStruct(Random random)
         {
             var fieldInititializers =
-                Fields.Select(f => $"{f.Name} = {f.Type.RandomValueProvider(random)}");
+                Fields.Select(f => $"{f.Name} = {f.Type.GetRandomValue(random)}");
             var ret = $"new {Name} {string.Join(", ", fieldInititializers)}";
             return ret;
         }

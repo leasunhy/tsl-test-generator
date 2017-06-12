@@ -31,6 +31,6 @@ namespace TSLTestGenerator.Templates
         }
 
         public Random MasterRandom { get; }
-        public long GeneratedCounter { get; set; }
+        public long GeneratedCount { get; set; }
     }
 }

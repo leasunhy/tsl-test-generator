@@ -28,7 +28,7 @@ namespace TSLTestGenerator.DataModel
         bool DynamicLengthed { get; }
         TSLFieldTypes FieldType { get; }
         string ClrTypeName { get; }
-        Func<Random, string> RandomValueProvider { get; }
+        Func<Random, string> GetRandomValue { get; }
     }
 
     public class VoidType : ITSLType
@@ -37,7 +37,7 @@ namespace TSLTestGenerator.DataModel
         public bool DynamicLengthed { get { throw new NotSupportedException(); } }
         public TSLFieldTypes FieldType => TSLFieldTypes.NonField;
         public string ClrTypeName => Name;
-        public Func<Random, string> RandomValueProvider { get { throw new NotImplementedException(); } }
+        public Func<Random, string> GetRandomValue { get { throw new NotImplementedException(); } }
         public override string ToString() => Name;
 
         private VoidType() { }
@@ -50,7 +50,7 @@ namespace TSLTestGenerator.DataModel
         public bool DynamicLengthed { get { throw new NotSupportedException(); } }
         public TSLFieldTypes FieldType => TSLFieldTypes.NonField;
         public string ClrTypeName => Name;
-        public Func<Random, string> RandomValueProvider { get { throw new NotImplementedException(); } }
+        public Func<Random, string> GetRandomValue { get { throw new NotImplementedException(); } }
         public override string ToString() => Name;
 
         private StreamType() { }
@@ -63,7 +63,7 @@ namespace TSLTestGenerator.DataModel
         public bool DynamicLengthed => false;
         public TSLFieldTypes FieldType => TSLFieldTypes.Array;
         public string ClrTypeName { get; }
-        public Func<Random, string> RandomValueProvider { get; }
+        public Func<Random, string> GetRandomValue { get; }
         public override string ToString() => Name;
 
         public ITSLType ElementType { get; }
@@ -78,7 +78,7 @@ namespace TSLTestGenerator.DataModel
                 throw new ArgumentOutOfRangeException(nameof(elementType), "Element type can't be dynamic lengthed!");
             Name = $"{elementType.Name}[{string.Join(", ", dimensions)}]";
             ClrTypeName = $"{elementType.Name}[{string.Join(",", dimensions.Select(d => ""))}]";
-            RandomValueProvider = random => GetRandomArrayValue(random);
+            GetRandomValue = random => GetRandomArrayValue(random);
         }
 
         private string GetRandomArrayValue(Random random, int currentDim = 0)
@@ -88,7 +88,7 @@ namespace TSLTestGenerator.DataModel
             if (currentDim == Dimensions.Length - 1)
             {
                 elements = Enumerable.Range(0, d)
-                                     .Select(_ => ElementType.RandomValueProvider(random));
+                                     .Select(_ => ElementType.GetRandomValue(random));
             }
             else
             {
@@ -105,7 +105,7 @@ namespace TSLTestGenerator.DataModel
         public bool DynamicLengthed => true;
         public TSLFieldTypes FieldType => TSLFieldTypes.List;
         public string ClrTypeName => Name;
-        public Func<Random, string> RandomValueProvider { get; }
+        public Func<Random, string> GetRandomValue { get; }
         public override string ToString() => Name;
 
         public ITSLType ElementType { get; }
@@ -114,14 +114,14 @@ namespace TSLTestGenerator.DataModel
         {
             ElementType = elementType;
             Name = $"List<{elementType.Name}>";
-            RandomValueProvider = GetRandomListValue;
+            GetRandomValue = GetRandomListValue;
         }
 
         private string GetRandomListValue(Random random)
         {
             var count = DiscreteUniform.Sample(random,
                 0, ContainerProbabilities.List.MaxRandomElementCount);
-            var elems = Enumerable.Range(0, count).Select(_ => ElementType.RandomValueProvider(random));
+            var elems = Enumerable.Range(0, count).Select(_ => ElementType.GetRandomValue(random));
             return $"new {Name}{{ {string.Join(", ", elems)} }}";
         }
     }
@@ -132,14 +132,14 @@ namespace TSLTestGenerator.DataModel
         public bool DynamicLengthed { get; }
         public TSLFieldTypes FieldType => TSLFieldTypes.Atom;
         public string ClrTypeName => Name;
-        public Func<Random, string> RandomValueProvider { get; }
+        public Func<Random, string> GetRandomValue { get; }
         public override string ToString() => Name;
 
         private AtomType(string name, bool dynamicLengthed, Func<Random, string> randomValueProvider)
         {
             this.Name = name;
             DynamicLengthed = dynamicLengthed;
-            RandomValueProvider = randomValueProvider;
+            GetRandomValue = randomValueProvider;
         }
 
         public static readonly ImmutableArray<AtomType> FixedLengthAtomTypes = new[]
