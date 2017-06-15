@@ -7,25 +7,31 @@
 <#@ import namespace="TSLTestGenerator.Templates" #>
 <#@ include file="FieldTestCodeTemplate.tt" #>
 
-namespace GeneratedTest_<#= Script.RandomSeedForGeneration #>
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using NUnit.Framework;
+using Trinity;
+
+namespace <#= Context.TestName #>
 {
-    public class Test_<#= Script.RandomSeedForGeneration #>
+    public unsafe class Test_<#= Element.Name #>_<#= Context.Script.RandomSeedForGeneration #>
     {
 <#
-        foreach (var e in Script.Enums)
-            GenerateTestCodeForEnum(e);
-        foreach (var e in Script.Protocols)
-            GenerateTestCodeForProtocol(e);
-        foreach (var e in Script.Servers)
-            GenerateTestCodeForServer(e);
-        foreach (var e in Script.Proxies)
-            GenerateTestCodeForProxy(e);
-        foreach (var e in Script.Modules)
-            GenerateTestCodeForModule(e);
-        foreach (var e in Script.Structs)
-            GenerateTestCodeForStruct(e);
-        foreach (var e in Script.Cells)
-            GenerateTestCodeForCell(e);
+        switch (Element)
+        {
+            case TSLEnum e: GenerateTestCodeForEnum(e); break;
+            case TSLProtocol e: GenerateTestCodeForProtocol(e); break;
+            case TSLServer e: GenerateTestCodeForServer(e); break;
+            case TSLProxy e: GenerateTestCodeForProxy(e); break;
+            case TSLModule e: GenerateTestCodeForModule(e); break;
+            case TSLStruct e: GenerateTestCodeForStruct(e); break;
+            case TSLCell e: GenerateTestCodeForCell(e); break;
+            default: throw new NotImplementedException();
+        }
 #>
     }
 }
@@ -35,24 +41,24 @@ namespace GeneratedTest_<#= Script.RandomSeedForGeneration #>
     {#>
 
         [Test]
-        public void TestEnum_<#= e.Name #>
+        public void TestEnum_<#= e.Name #>()
         {
 <#+
         int defaultValue = 0;
-        foreach (var member in e.Members)
+        foreach (var (key, value) in e.Members)
         {
-            if (member.Value == null)
+            if (value == null)
             {
 #>
-            Assert.That((int)<#= e.Name #>.<#= member.Key #>, Is.EqualTo(<#= defaultValue++ #>));
+            Assert.That((int)<#= e.Name #>.<#= key #>, Is.EqualTo(<#= defaultValue++ #>));
 <#+
             }
             else
             {
 #>
-            Assert.That((int)<#= e.Name #>.<#= member.Key #>, Is.EqualTo(<#= member.Value #>));
+            Assert.That((int)<#= e.Name #>.<#= key #>, Is.EqualTo(<#= value #>));
 <#+
-                defaultValue = member.Value.Value + 1;
+                defaultValue = value.Value + 1;
             }
         }
 #>
@@ -65,14 +71,14 @@ namespace GeneratedTest_<#= Script.RandomSeedForGeneration #>
     {#>
 
         [Test]
-        public void TestStruct_<#= e.Name #>
+        public void TestStruct_<#= e.Name #>()
         {
 <#+
         GenerateTestCodeForStructFieldTypes(e);
         // check if the struct is used by some protocol
         // if there are no reader/writer definitions for the struct,
         // we simply test the type of the fields
-        if (StructsUsedInProtocols.Contains(e))
+        if (Context.StructsUsedInProtocols.Contains(e))
             GenerateTestCodeForStructThatHasWriter(e);
 #>
         }
@@ -84,13 +90,23 @@ namespace GeneratedTest_<#= Script.RandomSeedForGeneration #>
     {
         var varName = $"fieldTypeTest_{e.Name}";
 #>
-            var <#= varName #> = new <#= e.Name #>();
+            //var <#= varName #> = new <#= e.Name #>();
 <#+
         foreach (var field in e.Fields)
         {
+            if (field.IsNullable)
+            {
 #>
-            Assert.That(typeof(<#= varName #>.<#= field.Name #>), Is.TypeOf<<#= field.Type.ClrTypeName #>>());
+            Utils.AssertFieldType(typeof(<#= e.ClrTypeName #>), "<#= field.Name #>", typeof(<#= field.Type.ClrTypeName #>?));
 <#+
+            }
+            else
+            {
+#>
+            //Assert.That(typeof(<#= varName #>.<#= field.Name #>), Is.TypeOf<<#= field.Type.ClrTypeName #>>());
+            Utils.AssertFieldType(typeof(<#= e.ClrTypeName #>), "<#= field.Name #>", typeof(<#= field.Type.ClrTypeName #>));
+<#+
+            }
         }
     }
 #>
@@ -120,7 +136,7 @@ namespace GeneratedTest_<#= Script.RandomSeedForGeneration #>
     {#>
 
         [Test]
-        public void TestCell_<#= e.Name #>
+        public void TestCell_<#= e.Name #>()
         {
 <#+
         // TODO(leasunhy): cell-specific tests

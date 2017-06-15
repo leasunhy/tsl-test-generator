@@ -1,0 +1,31 @@
+﻿<#@ template language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+using System;
+using System.Linq;
+using System.Reflection;
+using NUnit.Framework;
+
+namespace <#= TestName #>
+{
+    internal class Utils
+    {
+        public static void AssertFieldType(Type declaringType, string fieldName, Type fieldType)
+        {
+            var field = (FieldInfo)declaringType.GetMember(fieldName).Single(m => m.MemberType == MemberTypes.Field);
+            Assert.That(field.FieldType, Is.EqualTo(fieldType));
+        }
+    }
+}
+
+<#+
+    string TestName;
+
+    public UtilsTemplate(string testName)
+    {
+        TestName = testName;
+    }
+#>

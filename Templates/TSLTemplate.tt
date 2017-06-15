@@ -11,9 +11,9 @@
 <# { #>
 enum <#= e.Name #>
 {
-<# foreach (var member in e.Members) #>
+<# foreach (var (key, value) in e.Members) #>
 <# { #>
-    <#= member.Key #><# if (member.Value != null) { #> = <#= member.Value #><# } #>,
+    <#= key #><# if (value != null) { #> = <#= value #><# } #>,
 <# } #>
 }
 

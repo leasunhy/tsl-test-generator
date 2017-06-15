@@ -12,7 +12,7 @@ namespace TSLTestGenerator.DataModel
         public TSLFieldTypes FieldType => TSLFieldTypes.Enum;
         public string ClrTypeName => Name;
         public Func<Random, string> GetRandomValue { get; }
-        public ImmutableDictionary<string, int?> Members { get; }
+        public ImmutableArray<(string, int?)> Members { get; }
         // TODO(leasunhy): implement `starting value`
 
         public TSLEnum(string name, IEnumerable<string> members, IDictionary<string, int> values = null)
@@ -22,14 +22,14 @@ namespace TSLTestGenerator.DataModel
             Name = name;
             Members =
                 members
-                    .Select(m => new KeyValuePair<string, int?>(m, values?.GetValueOrNull(m)))
-                    .ToImmutableDictionary();
-            GetRandomValue = random => Members.Choice(random).Key;
+                    .Select(m => (m, values?.GetValueOrNull(m)))
+                    .ToImmutableArray();
+            GetRandomValue = random => Members.Choice(random).Item1;
         }
 
         public override string ToString()
         {
-            var members = Members.Select(pair => $"{pair.Key}{FormatValue(pair.Value)}");
+            var members = Members.Select((key, value) => $"{key}{FormatValue(value)}");
             return $"enum {Name}\n{{\n  {string.Join(",\n  ", members)}\n}}";
         }
 

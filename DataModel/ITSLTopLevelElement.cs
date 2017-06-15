@@ -2,5 +2,6 @@
 {
     public interface ITSLTopLevelElement
     {
+        string Name { get; }
     }
 }

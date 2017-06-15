@@ -22,13 +22,13 @@ namespace TSLTestGenerator
             }
 
             // element probabilities; must sum to 1.00
-            public const double Struct = 0.20;
-            public const double Cell = 0.10;
-            public const double Protocol = 0.20;
-            public const double Server = 0.20;
+            public const double Struct = 0.25;
+            public const double Cell = 0.15;
+            public const double Protocol = 0.25;
+            public const double Server = 0.05;
             public const double Proxy = 0.05;
-            public const double Enum = 0.05;
-            public const double Module = 0.20;
+            public const double Enum = 0.10;
+            public const double Module = 0.10;
         }
 
         public static class StructSettings
@@ -52,7 +52,7 @@ namespace TSLTestGenerator
 
             public const int MaxDepth = 2;
             public const int MinFieldNumber = 0;
-            public const int MaxFieldNumber = 50;
+            public const int MaxFieldNumber = 10;
         }
 
         public static class ContainerProbabilities
@@ -82,7 +82,7 @@ namespace TSLTestGenerator
                     Debug.Assert(Math.Abs(ElementAtom + ElementStruct + ElementEnum + ElementArray + ElementList - 1.0) < 1e-6);
                 }
                 public const double ElementAtom = 0.30;
-                public const double ElementStruct = 0.30;
+                public const double ElementStruct = 0.00;
                 public const double ElementEnum = 0.10;
                 public const double ElementArray = 0.15;
                 public const double ElementList = 0.15;

@@ -104,7 +104,7 @@ namespace TSLTestGenerator.DataModel
         public string Name { get; }
         public bool DynamicLengthed => true;
         public TSLFieldTypes FieldType => TSLFieldTypes.List;
-        public string ClrTypeName => Name;
+        public string ClrTypeName { get; }
         public Func<Random, string> GetRandomValue { get; }
         public override string ToString() => Name;
 
@@ -114,6 +114,7 @@ namespace TSLTestGenerator.DataModel
         {
             ElementType = elementType;
             Name = $"List<{elementType.Name}>";
+            ClrTypeName = $"List<{elementType.ClrTypeName}>";
             GetRandomValue = GetRandomListValue;
         }
 
@@ -131,15 +132,16 @@ namespace TSLTestGenerator.DataModel
         public string Name { get; }
         public bool DynamicLengthed { get; }
         public TSLFieldTypes FieldType => TSLFieldTypes.Atom;
-        public string ClrTypeName => Name;
+        public string ClrTypeName { get; }
         public Func<Random, string> GetRandomValue { get; }
         public override string ToString() => Name;
 
-        private AtomType(string name, bool dynamicLengthed, Func<Random, string> randomValueProvider)
+        private AtomType(string name, bool dynamicLengthed, Func<Random, string> randomValueProvider, string clrTypeName = null)
         {
-            this.Name = name;
+            Name = name;
             DynamicLengthed = dynamicLengthed;
             GetRandomValue = randomValueProvider;
+            ClrTypeName = clrTypeName ?? name;
         }
 
         public static readonly ImmutableArray<AtomType> FixedLengthAtomTypes = new[]
@@ -164,7 +166,7 @@ namespace TSLTestGenerator.DataModel
         public static readonly ImmutableArray<AtomType> AtomTypes = FixedLengthAtomTypes.AddRange(new[]
         {
             new AtomType("string", true, random => $"\"{RandomString(random)}\""),
-            new AtomType("u8string", true, random => $"\"{RandomString(random)}\""),
+            new AtomType("u8string", true, random => $"\"{RandomString(random)}\"", "string"),
         }).ToImmutableArray();
 
         private static AtomType IntegralType(string name, int lower, int upper, string suffix = "")

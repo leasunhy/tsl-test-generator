@@ -48,6 +48,9 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System.Core" />
+    <Reference Include="System.ValueTuple, Version=4.0.1.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.3.1\lib\netstandard1.0\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -72,6 +75,22 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FieldTestCodeTemplate.tt</DependentUpon>
     </None>
+    <Compile Include="Templates\NetcoreProjectFileTemplate.cs">
+      <DependentUpon>NetcoreProjectFileTemplate.tt</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <Compile Include="Templates\NetfxProjectFileTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>NetfxProjectFileTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\PackagesConfigTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PackagesConfigTemplate.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Templates\TestCodeGeneratorContext.cs" />
     <Compile Include="Templates\TestCodeTemplate.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -84,6 +103,11 @@
       <DependentUpon>TSLTemplate.tt</DependentUpon>
     </Compile>
     <Compile Include="Templates\TSLTemplateCode.cs" />
+    <Compile Include="Templates\UtilsTemplate.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>UtilsTemplate.tt</DependentUpon>
+    </Compile>
     <Compile Include="TopLevelElementGenerators.cs" />
     <Compile Include="TSLGenerator.cs" />
     <Compile Include="TSLGeneratorCombinator.cs" />
@@ -102,6 +126,18 @@
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>FieldTestCodeTemplate.cs</LastGenOutput>
     </Content>
+    <Content Include="Templates\NetcoreProjectFileTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>NetcoreProjectFileTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\NetfxProjectFileTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>NetfxProjectFileTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\PackagesConfigTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>PackagesConfigTemplate.cs</LastGenOutput>
+    </Content>
     <Content Include="Templates\TestCodeTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TestCodeTemplate.cs</LastGenOutput>
@@ -109,6 +145,10 @@
     <Content Include="Templates\TSLTemplate.tt">
       <Generator>TextTemplatingFilePreprocessor</Generator>
       <LastGenOutput>TSLTemplate.cs</LastGenOutput>
+    </Content>
+    <Content Include="Templates\UtilsTemplate.tt">
+      <Generator>TextTemplatingFilePreprocessor</Generator>
+      <LastGenOutput>UtilsTemplate.cs</LastGenOutput>
     </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

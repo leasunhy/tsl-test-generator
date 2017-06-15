@@ -35,6 +35,12 @@ namespace TSLTestGenerator.DataModel
         public string Name { get; }
         public ImmutableArray<TSLAttribute> Attributes { get; }
         public bool DynamicLengthed => Optional || Type.DynamicLengthed;
+        public bool IsNullable => Optional && IsValueType;
+
+        public bool IsValueType
+            => Type.FieldType == TSLFieldTypes.Enum ||
+               Type.FieldType == TSLFieldTypes.Struct ||
+               Type.FieldType == TSLFieldTypes.Atom && Type.ClrTypeName != "string";
 
         public TSLField(ITSLType type, string name, bool optional, IEnumerable<TSLAttribute> attributes = null)
         {

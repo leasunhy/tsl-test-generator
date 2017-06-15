@@ -59,7 +59,7 @@ namespace TSLTestGenerator.Templates
             this.Write("\r\n{\r\n");
             
             #line 14 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TSLTemplate.tt"
- foreach (var member in e.Members) 
+ foreach (var (key, value) in e.Members) 
             
             #line default
             #line hidden
@@ -72,20 +72,20 @@ namespace TSLTestGenerator.Templates
             this.Write("    ");
             
             #line 16 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TSLTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(member.Key));
+            this.Write(this.ToStringHelper.ToStringWithCulture(key));
             
             #line default
             #line hidden
             
             #line 16 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TSLTemplate.tt"
- if (member.Value != null) { 
+ if (value != null) { 
             
             #line default
             #line hidden
             this.Write(" = ");
             
             #line 16 "C:\Users\v-siyul.FAREAST\documents\visual studio 2017\Projects\TSLTestGenerator\TSLTestGenerator\Templates\TSLTemplate.tt"
-            this.Write(this.ToStringHelper.ToStringWithCulture(member.Value));
+            this.Write(this.ToStringHelper.ToStringWithCulture(value));
             
             #line default
             #line hidden
